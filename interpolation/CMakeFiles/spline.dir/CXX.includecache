@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/hp/ITSP2k16-HawkEyes/interpolation/src/main.cpp
+interpolation/spline.h
+/home/hp/ITSP2k16-HawkEyes/interpolation/src/interpolation/spline.h
+
+/home/hp/ITSP2k16-HawkEyes/interpolation/src/spline.cpp
+interpolation/spline.h
+-
+
+include/interpolation/pose.h
+
+include/interpolation/spline.h
+iostream
+-
+vector
+-
+interpolation/pose.h
+-
+

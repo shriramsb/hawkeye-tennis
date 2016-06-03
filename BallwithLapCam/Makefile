@@ -39,10 +39,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jeyasoorya/ITSP2k16-Hawkeye/ocvtemp/BallwithLapCam
+CMAKE_SOURCE_DIR = /home/hp/ITSP2k16-HawkEyes/BallwithLapCam
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jeyasoorya/ITSP2k16-Hawkeye/ocvtemp/BallwithLapCam
+CMAKE_BINARY_DIR = /home/hp/ITSP2k16-HawkEyes/BallwithLapCam
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -69,9 +69,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jeyasoorya/ITSP2k16-Hawkeye/ocvtemp/BallwithLapCam/CMakeFiles /home/jeyasoorya/ITSP2k16-Hawkeye/ocvtemp/BallwithLapCam/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hp/ITSP2k16-HawkEyes/BallwithLapCam/CMakeFiles /home/hp/ITSP2k16-HawkEyes/BallwithLapCam/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jeyasoorya/ITSP2k16-Hawkeye/ocvtemp/BallwithLapCam/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hp/ITSP2k16-HawkEyes/BallwithLapCam/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
