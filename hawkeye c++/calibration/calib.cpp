@@ -15,14 +15,17 @@ using namespace cv;
 using namespace std;
 
 int main(){
-	char filename[50] = "calibimgs/chessboard1.jpg";
+	char filename[50] = "calibimgs/1.JPG";
 	const int n_cols = 7;
 	const int n_rows = 7;
 	const int n_points = n_cols * n_rows;
 	const int n_boards = 8;
-	const int sqSize = 1;
+	const float sqSize = 2.35;
 	const Size board_size = Size(n_cols, n_rows);
-	Size image_size = Size(1280, 720);
+	int flag = 0;
+	//flag |= CALIB_FIX_K3;
+	//flag |= CALIB_ZERO_TANGENT_DIST;
+	Size image_size = Size(2160, 1620);
 	vector<vector<Point3f> > object_points(1);
 	vector<Point2f> PointBuf;
 	vector<vector<Point2f> > image_points;
@@ -35,14 +38,14 @@ int main(){
 	Mat img;
 	Mat img1;
 	Mat img_gray;
-	Mat camera_matrix = Mat::zeros(3,3, CV_64F);
-	Mat distCoeff = Mat::zeros(5,1,CV_64F);
+	Mat camera_matrix = Mat::eye(3,3, CV_32FC1);
+	Mat distCoeff = Mat::zeros(5,1,CV_32FC1);
 	vector<Mat> rvecs;
 	vector<Mat> tvecs;
 	while(n_read != n_boards){
-		filename[20] = i + 48;
+		filename[10] = i + 48;
 		i++;
-		img = imread(filename);
+		img = imread(filename,1);
 		found = findChessboardCorners(img, board_size, PointBuf);
 		cout << found;
 		
@@ -53,12 +56,13 @@ int main(){
 			image_points.push_back(PointBuf);
 		}
 		img1 = img.clone();
-		drawChessboardCorners(img1, board_size, image_points, found);
+		drawChessboardCorners(img1, board_size, PointBuf, found);
 		imshow("chessboard",img);
 		imshow("corners",img1);
 		waitKey(0);
+		n_read++;
 	}
-	double rms = calibrateCamera(object_points, image_points, image_size, camera_matrix, distCoeff, rvecs, tvecs);
+	double rms = calibrateCamera(object_points, image_points, image_size, camera_matrix, distCoeff, rvecs, tvecs,flag);
 	vector<Point2f> imagepoints2;
 	vector<double> perviewerr;
 	double err,tot_err = 0;
@@ -80,6 +84,7 @@ int main(){
 	f << "total_error" << tot_err;
 	f.release();
 	cout << camera_matrix<<endl;
+	cout << optCamMat;
 	cout << distCoeff<<endl;
 	cout << rms<<endl;
 	cout << tot_err <<endl;
@@ -87,11 +92,12 @@ int main(){
 	initUndistortRectifyMap(camera_matrix, distCoeff, Mat(),optCamMat,image_size,CV_16SC2,map1,map2);
 	for (int i = 0; i < n_boards; i++)
 	{
-		filename[20] = i + 49;
+		filename[10] = i + 49;
 		img = imread(filename,1);
 		remap(img, img1, map1, map2,INTER_LINEAR);
 		imshow("original",img);
 		imshow("undistorted", img1);
-		imwrite(("undist/%s",filename),img1);
+		waitKey(0);
 	}
+	
 }
