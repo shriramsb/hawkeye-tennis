@@ -1,38 +1,25 @@
 #include<eigen3/Eigen/Dense>
 #include<vector>
 #include<fstream>
-class Integrator
+#include<interpolation/pose.h>
+
+class SplineFit
 {
-    double position;
-    int maxDataPoints;
-    std::vector<double> _velocity;
+    std::vector<Pose> _position;
+    std::vector<Pose> _path;
     std::vector<double> _time;
-    std::vector<double> _position;
-    Eigen::MatrixXd A;
-    std::vector<double> b, c, d, h;
-    std::vector<double> B;
-    std::vector<double>::iterator iter;
+    std::vector<Pose> h;
+    int degree;
     int n;
-    double dt0;
-    bool maxReached;
-    void fitCubicSpline();
-    double fitCubicSplineRel();
-    void calculateD();
+    int nPoints;
+    Eigen::MatrixXd A;
+    std::vector<double> B;
+    
+    void getPosAndTime(Pose pos, double time);
+    void linearFit();
+    void quadraticFit();
     void calculateB();
-    double f(double x);
-    double rectangular();
-    double trapezoidal();
-    void calculateAccuratePosition();
-    void printH();
-    void printB();
-    void printC();
-    void printD();
-    void printb();
-    void printTime();
-    void printVelocity();
     public:
-    Integrator(int nPoints=10);
-    void getVelAndTime(double vel, double time);
-    void reset();
-    double calculatePosition(int method);
+    SplineFit(int deg=10, int np=10);
+    std::vector<Pose> interpolate(std::vector<Pose> pts);
 };
