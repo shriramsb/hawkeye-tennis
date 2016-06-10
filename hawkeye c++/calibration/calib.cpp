@@ -23,13 +23,14 @@ int main(){
 	const float sqSize = 2.35;
 	const Size board_size = Size(n_cols, n_rows);
 	int flag = 0;
-	//flag |= CALIB_FIX_K3;
+	//to fix any value
+	flag |= CALIB_FIX_K3;
 	//flag |= CALIB_ZERO_TANGENT_DIST;
 	Size image_size = Size(2160, 1620);
-	vector<vector<Point3f> > object_points(1);
-	vector<Point2f> PointBuf;
-	vector<vector<Point2f> > image_points;
-	for (int i = 0; i < n_cols; i++)
+	vector<vector<Point3f> > object_points(1);		//coordinates of chessboard corners wrt its coordinate system attached to it
+	vector<Point2f> PointBuf;						//temp vector to store pixel coordinates of chessboard corners
+	vector<vector<Point2f> > image_points;			//pixel coordinates of chessboard corners
+	for (int i = 0; i < n_cols; i++)				
 		for (int j = 0; j < n_rows; j++)
 			object_points[0].push_back(Point3f(j * sqSize, i * sqSize, 0));
 	object_points.resize(n_boards, object_points[0]);
@@ -46,12 +47,13 @@ int main(){
 		filename[10] = i + 48;
 		i++;
 		img = imread(filename,1);
-		found = findChessboardCorners(img, board_size, PointBuf);
+		found = findChessboardCorners(img, board_size, PointBuf);	
 		cout << found;
 		
 		if (found)
 		{
 			cvtColor(img, img_gray, COLOR_BGR2GRAY);
+			//finds pixel coordinates of chessboard corners to subpixel accuracy
 			cornerSubPix(img_gray, PointBuf,Size(11,11),Size(-1,-1),TermCriteria(TermCriteria::EPS+TermCriteria::COUNT,30, 0.1));
 			image_points.push_back(PointBuf);
 		}
@@ -62,10 +64,12 @@ int main(){
 		waitKey(0);
 		n_read++;
 	}
+	//rms is reprojection error
 	double rms = calibrateCamera(object_points, image_points, image_size, camera_matrix, distCoeff, rvecs, tvecs,flag);
 	vector<Point2f> imagepoints2;
 	vector<double> perviewerr;
 	double err,tot_err = 0;
+	//tot_err is reprojection error calculated by me(just to understand it)
 	for (int i = 0; i < n_boards; i++)
 	{
 		projectPoints(object_points[i],rvecs[i],tvecs[i],camera_matrix,distCoeff,imagepoints2);
@@ -75,6 +79,7 @@ int main(){
 	}
 	tot_err /= (n_points * n_boards);
 	tot_err = sqrt(tot_err);
+	//optCamMat - camera matrix of the camera which gives undistorted images
 	Mat optCamMat = getOptimalNewCameraMatrix(camera_matrix,distCoeff,image_size,1,image_size);
 	FileStorage f("calib.xml", FileStorage::WRITE);
 	f << "CameraMatrix" << camera_matrix;
@@ -82,6 +87,8 @@ int main(){
 	f << "distortion_Coefficients" <<distCoeff;
 	f << "rms_error" << rms;
 	f << "total_error" << tot_err;
+	f << "rotationvector1" << rvecs[1];
+	f << "translationvector1" << tvecs[1];
 	f.release();
 	cout << camera_matrix<<endl;
 	cout << optCamMat;
@@ -89,14 +96,18 @@ int main(){
 	cout << rms<<endl;
 	cout << tot_err <<endl;
 	Mat map1, map2;
+	//undistortion of images
+	char destfile[20] = "1.JPG";
 	initUndistortRectifyMap(camera_matrix, distCoeff, Mat(),optCamMat,image_size,CV_16SC2,map1,map2);
 	for (int i = 0; i < n_boards; i++)
 	{
 		filename[10] = i + 49;
+		destfile[0] = i + 49;
 		img = imread(filename,1);
 		remap(img, img1, map1, map2,INTER_LINEAR);
 		imshow("original",img);
 		imshow("undistorted", img1);
+		imwrite(destfile,img1);
 		waitKey(0);
 	}
 	

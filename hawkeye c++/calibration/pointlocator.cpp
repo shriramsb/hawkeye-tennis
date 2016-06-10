@@ -17,20 +17,20 @@ const float sqSize = 2.35;
 
 class Camera{
 public:
-	Mat cam_mat;
-	Mat rvec, tvec;
-	Mat proj_mat;
-	Mat orig_cam_mat;
+	Mat cam_mat;			//optimal camera matrix
+	Mat rvec, tvec;			
+	Mat proj_mat;			//M*[R|T]
+	Mat orig_cam_mat;		
 	Mat dist_coeff;
 	void calcproj_mat(){
 		Mat rot_mat;
-		Rodrigues(rvec, rot_mat);
+		Rodrigues(rvec, rot_mat);									//rotation matrix R from rvec
 		Mat aug_mat(3, 4, CV_64F);
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
 				aug_mat.at<double>(i,j) = rot_mat.at<double>(i,j);
 		for (int i = 0; i < 3; i++)
-			aug_mat.at<double>(i,3) = tvec.at<double>(i,0);
+			aug_mat.at<double>(i,3) = tvec.at<double>(i,0);			//aug_mat = [R|T]
 
 		proj_mat = cam_mat * aug_mat;
 	}
@@ -48,7 +48,7 @@ public:
 			for (int j = 0; j < n_cols; j++)
 				obj_pts.push_back(Point3d(j * sqSize, i * sqSize, 0));
 		
-		solvePnP(obj_pts, img_pts, orig_cam_mat, dist_coeff, rvec, tvec);
+		solvePnP(obj_pts, img_pts, orig_cam_mat, dist_coeff, rvec, tvec);	//gets rvec and tvec
 		calcproj_mat();
 	
 	}

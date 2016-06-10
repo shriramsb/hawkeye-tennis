@@ -1,3 +1,4 @@
+//projects a point wrt to some coordinate system to camera coordinates(pixel coordinates)
 #include <iostream>
 #include <sstream>
 #include <time.h>
