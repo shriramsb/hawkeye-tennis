@@ -18,7 +18,6 @@ class SplineFit
     std::vector<double> Bx,Bz;
     std::vector<double> bx,bz,cx,cz;
     
-    void getPosAndTime(Pose pos, double time);
     void linearFit();
     void quadraticFit();
     void fitX();
@@ -27,5 +26,7 @@ class SplineFit
     double fz(double y);
     public:
     SplineFit(int deg=2, int np=10);
-    std::vector<Pose> interpolate(std::vector<Pose> pts);
+    std::vector<Pose> interpolate();
+    void getPosAndTime(Pose pos, double time);
+    void print();
 };
