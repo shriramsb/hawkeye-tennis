@@ -17,9 +17,9 @@ Ptr<BackgroundSubtractor> pMOG;
 int keyboard;
 
 int main(){
-	char filename[40] = "videos/7.MOV";
+	char filename[40] = "videos/9.MOV";
 	const int count = 300;
-	const int kernel_size = 3;
+	const int kernel_size = 5;
 	const int width = 1280;
 	const int height = 720;
 	char c = 'p';
@@ -36,11 +36,11 @@ int main(){
 		imshow("fg",fgMaskMOG);
 		waitKey(30);
 	}
-	capture.set(CAP_PROP_POS_FRAMES, 1200);
+	capture.set(CAP_PROP_POS_FRAMES, 900);
 	while(c != 'q'){
 		capture.read(frame);
 		medianBlur(frame,frame,kernel_size);
-		pMOG->apply(frame, fgMaskMOG,0);
+		pMOG->apply(frame, fgMaskMOG);
 		imshow("frame", frame);
 		imshow("fg",fgMaskMOG);
 		c = waitKey(30);

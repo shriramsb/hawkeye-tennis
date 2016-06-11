@@ -18,12 +18,13 @@ int main(int argc, char** argv)
 {
 	src = imread(argv[1],0);
 
-	threshold(src, src, 50,255,0);
+	threshold(src, src, 0,255,0);
 	Mat element = getStructuringElement(MORPH_RECT, Size(3,3),Point(1,1));
 	for (int i = 0; i < 2; i++)
 		dilate(src, src, element);
 	for (int i = 0; i < 2; i++)
 		erode(src, src, element);
+	
 	imshow("srcthresdilate",src);
 	imwrite("images/dilerode.png",src);
 	waitKey(0);
@@ -51,8 +52,8 @@ int main(int argc, char** argv)
 		if(contours[i].size() > 5 && s.width/s.height > 0.7 && s.width/s.height < 1.4 && s.width > 5 && s.height > 5)// && arcLength(contours[i],true)/(2*CV_PI*radius[i])>0.8 && arcLength(contours[i],true)/(2*CV_PI*radius[i]) < 1.2 )
 		{
 			drawContours(drawing, contours, (int)i, color, -1, 8, hierarchy, 0, Point());
-			cout<<"H"<<c.x<<" "<<c.y<<endl;
-			cout<<s.width<<" "<<s.height;
+			cout<<c.x<<" "<<c.y<<endl;
+			cout<<s.width<<" "<<s.height<<endl<<endl;
 		}
 	
 	}
