@@ -11,11 +11,11 @@ def plotFn(fileName):
         x.append(lineData[0])
         y.append(lineData[1])
         z.append(lineData[2])
-    plt.plot()
+    plt.plot(y,x,'bo')
     #fig = plt.figure()
     #ax = plt.axes(projection='3d')
     #ax.scatter(x,y,z,'-b')
     plt.show()
 
 if __name__=="__main__":
-    plotFn("../linear.txt")
+    plotFn("../quadratic.txt")

@@ -99,65 +99,65 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named spline
+# Target rules for targets named spline_fit
 
 # Build rule for target.
-spline: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 spline
-.PHONY : spline
+spline_fit: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 spline_fit
+.PHONY : spline_fit
 
 # fast build rule for target.
-spline/fast:
-	$(MAKE) -f CMakeFiles/spline.dir/build.make CMakeFiles/spline.dir/build
-.PHONY : spline/fast
+spline_fit/fast:
+	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/build
+.PHONY : spline_fit/fast
 
-src/main.o: src/main.cpp.o
-.PHONY : src/main.o
-
-# target to build an object file
-src/main.cpp.o:
-	$(MAKE) -f CMakeFiles/spline.dir/build.make CMakeFiles/spline.dir/src/main.cpp.o
-.PHONY : src/main.cpp.o
-
-src/main.i: src/main.cpp.i
-.PHONY : src/main.i
-
-# target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) -f CMakeFiles/spline.dir/build.make CMakeFiles/spline.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
-
-src/main.s: src/main.cpp.s
-.PHONY : src/main.s
-
-# target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) -f CMakeFiles/spline.dir/build.make CMakeFiles/spline.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
-
-src/spline.o: src/spline.cpp.o
-.PHONY : src/spline.o
+src/main_fit.o: src/main_fit.cpp.o
+.PHONY : src/main_fit.o
 
 # target to build an object file
-src/spline.cpp.o:
-	$(MAKE) -f CMakeFiles/spline.dir/build.make CMakeFiles/spline.dir/src/spline.cpp.o
-.PHONY : src/spline.cpp.o
+src/main_fit.cpp.o:
+	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/main_fit.cpp.o
+.PHONY : src/main_fit.cpp.o
 
-src/spline.i: src/spline.cpp.i
-.PHONY : src/spline.i
+src/main_fit.i: src/main_fit.cpp.i
+.PHONY : src/main_fit.i
 
 # target to preprocess a source file
-src/spline.cpp.i:
-	$(MAKE) -f CMakeFiles/spline.dir/build.make CMakeFiles/spline.dir/src/spline.cpp.i
-.PHONY : src/spline.cpp.i
+src/main_fit.cpp.i:
+	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/main_fit.cpp.i
+.PHONY : src/main_fit.cpp.i
 
-src/spline.s: src/spline.cpp.s
-.PHONY : src/spline.s
+src/main_fit.s: src/main_fit.cpp.s
+.PHONY : src/main_fit.s
 
 # target to generate assembly for a file
-src/spline.cpp.s:
-	$(MAKE) -f CMakeFiles/spline.dir/build.make CMakeFiles/spline.dir/src/spline.cpp.s
-.PHONY : src/spline.cpp.s
+src/main_fit.cpp.s:
+	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/main_fit.cpp.s
+.PHONY : src/main_fit.cpp.s
+
+src/spline_fit.o: src/spline_fit.cpp.o
+.PHONY : src/spline_fit.o
+
+# target to build an object file
+src/spline_fit.cpp.o:
+	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/spline_fit.cpp.o
+.PHONY : src/spline_fit.cpp.o
+
+src/spline_fit.i: src/spline_fit.cpp.i
+.PHONY : src/spline_fit.i
+
+# target to preprocess a source file
+src/spline_fit.cpp.i:
+	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/spline_fit.cpp.i
+.PHONY : src/spline_fit.cpp.i
+
+src/spline_fit.s: src/spline_fit.cpp.s
+.PHONY : src/spline_fit.s
+
+# target to generate assembly for a file
+src/spline_fit.cpp.s:
+	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/spline_fit.cpp.s
+.PHONY : src/spline_fit.cpp.s
 
 # Help Target
 help:
@@ -167,13 +167,13 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... spline"
-	@echo "... src/main.o"
-	@echo "... src/main.i"
-	@echo "... src/main.s"
-	@echo "... src/spline.o"
-	@echo "... src/spline.i"
-	@echo "... src/spline.s"
+	@echo "... spline_fit"
+	@echo "... src/main_fit.o"
+	@echo "... src/main_fit.i"
+	@echo "... src/main_fit.s"
+	@echo "... src/spline_fit.o"
+	@echo "... src/spline_fit.i"
+	@echo "... src/spline_fit.s"
 .PHONY : help
 
 
