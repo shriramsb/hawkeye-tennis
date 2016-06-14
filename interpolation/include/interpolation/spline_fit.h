@@ -14,13 +14,15 @@ class SplineFit
     int nPoints;
     Eigen::MatrixXd A;
     std::vector<double> B;
-    std::vector<double> b,c;
+    std::vector<double> b,c,d;
     
     void linearFit();
     void quadraticFit();
     void cubicFit();
-    void fitY();
-    double fy(double x);
+    void fitYQuad();
+    void fitYCubic();
+    double fyQuad(double x);
+    double fyCubic(double x);
     public:
     SplineFit(int deg=2, int np=10);
     std::vector<double> interpolate();
