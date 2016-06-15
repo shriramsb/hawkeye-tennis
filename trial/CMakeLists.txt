@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 2.8)
+project(trial)
+set(OpenCV_DIR '/home/aadhavan/opencv-3.1.0/build')
+find_package(OpenCV 3.1 REQUIRED)
+add_executable( trial trial.cpp)
+target_link_libraries( trial ${OpenCV_LIBS})
