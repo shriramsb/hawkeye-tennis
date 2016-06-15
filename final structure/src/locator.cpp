@@ -1,7 +1,7 @@
 #include <detection.h>
 
 
-void syncVideo(CamFrame camera[]){
+void syncVideo(CamFrame camera[]){				//manual synchronization of video 
 	namedWindow("camera1", WINDOW_NORMAL);
 	namedWindow("camera2", WINDOW_NORMAL);
 	for (int i = 0; i < 2; i++){
@@ -27,7 +27,7 @@ void syncVideo(CamFrame camera[]){
 	destroyWindow("camera2");
 }
 
-void show(CamFrame& camera, int window){
+void show(CamFrame& camera, int window){					//display frame
 	char windowname[50];
 	//sprintf(windowname, "camera%dframe",window);
 	//imshow(windowname, camera.orig);
@@ -37,7 +37,7 @@ void show(CamFrame& camera, int window){
 	imshow(windowname, camera.contour_plot);
 	waitKey(0);
 }
-void get3dloc(CamFrame camera[], fstream& output){
+void get3dloc(CamFrame camera[], fstream& output){			
 	for (int i = 0; i < 2; i++){
 		camera[i].getframe();
 		camera[i].subtBgColDet();

@@ -1,14 +1,14 @@
 #include <detection.h>
 
-Camera::Camera(){}
-
-Camera::Camera(char* calib, char* video){
-	Mat rvec, tvec;
+Camera::Camera(){}													//default constructor
+	
+Camera::Camera(char* calib, char* video){							//calib - path to xml file
+	Mat rvec, tvec;													//video - path to video file
 	pMOG2 = createBackgroundSubtractorMOG2();
-	cap.open(video);
+	cap.open(video);												
 	FileStorage param(calib, FileStorage::READ);
 	param["OptimalCamMatrix"] >> optCamMat;
-	param["undist_mapx"] >> mapx;
+	param["undist_mapx"] >> mapx;									
 	param["undist_mapy"] >> mapy;
 	param["rvec"] >> rvec;
 	param["tvec"] >> tvec;
@@ -30,9 +30,9 @@ void Camera::learnBg(){
 	int start, end;
 	Mat temp;
 	Mat temp1;
-	cout << "Enter start postion(in sec):";
+	cout << "Enter start postion(in sec):";				
 	cin >> start;
-	cout << "Enter end position(in sec):";
+	cout << "Enter end position(in sec):";					
 	cin >> end;
 	start *= 1000;											// *1000 to convert to milliseconds
 	end *= 1000;
@@ -42,7 +42,7 @@ void Camera::learnBg(){
 		medianBlur(temp, temp, kernel_size);
 		pMOG2->apply(temp, temp1);
 	}
-	cap.set(CAP_PROP_POS_FRAMES,0);
+	cap.set(CAP_PROP_POS_FRAMES,0);							//set the pointer back to start to sync later
 }
 
 
