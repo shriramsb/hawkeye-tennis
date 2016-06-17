@@ -7,7 +7,7 @@ void syncVideo(CamFrame camera[]){				//manual synchronization of video
 	for (int i = 0; i < 2; i++){
 		camera[i].getframe();
 		char temp[20];
-		sprintf(temp, "camera%d", i);
+		sprintf(temp, "camera%d", i + 1);
 		imshow(temp, camera[i].orig);
 	}
 	char c;
@@ -21,6 +21,21 @@ void syncVideo(CamFrame camera[]){				//manual synchronization of video
 			camera[1].getframe();
 			imshow("camera2", camera[1].orig);
 		}
+		else if (c == '8'){
+			camera[0].nextsecond();
+			imshow("camera1", camera[0].orig);
+		}
+		else if (c == '9'){
+			camera[1].nextsecond();
+			imshow("camera2", camera[1].orig);
+		}
+		else if (c == 'p'){
+			cout << camera[0].cam.cap.get(CAP_PROP_POS_FRAMES) << endl << camera[1].cam.cap.get(CAP_PROP_POS_FRAMES);
+		}
+		else if (c == 'r'){
+			camera[0].cam.cap.set(CAP_PROP_POS_FRAMES, 4065);
+			camera[1].cam.cap.set(CAP_PROP_POS_FRAMES, 4228);
+		}
 		c = waitKey(0);
 	}
 	destroyWindow("camera1");
@@ -31,11 +46,13 @@ void show(CamFrame& camera, int window){					//display frame
 	char windowname[50];
 	//sprintf(windowname, "camera%dframe",window);
 	//imshow(windowname, camera.orig);
+	sprintf(windowname,"camera%dcolMask", window);
+	imshow(windowname, camera.colMask);
 	sprintf(windowname, "camera%dmorph_colMask",window);
-	imshow(windowname, camera.morph_colMask);
+	imshow(windowname, camera.colMask);
 	sprintf(windowname, "camera%dcontour",window);
 	imshow(windowname, camera.contour_plot);
-	waitKey(0);
+
 }
 void get3dloc(CamFrame camera[], fstream& output){			
 	for (int i = 0; i < 2; i++){
@@ -43,13 +60,24 @@ void get3dloc(CamFrame camera[], fstream& output){
 		camera[i].subtBgColDet();
 		camera[i].contourDetection();
 		show(camera[i], i + 1);
-		camera[i].findcenter();
+		//camera[i].findcenter();
 	}
-	Mat pt3d;
+	/*Mat pt3d;
 	pos3d_solve(camera[0].cam.proj_mat, camera[1].cam.proj_mat, camera[0].center, camera[1].center, pt3d);
 	cout << pt3d;
 	output << pt3d << endl;
-	waitKey(0);
+	int n;
+	cin >> n;
+	if (n == 100)
+		syncVideo(camera);
+	else if (n != 0){
+		int pos[2];
+		for (int i = 0; i < 2; i++){
+			pos[i] = camera[i].cam.cap.get(CAP_PROP_POS_MSEC);
+			camera[i].cam.cap.set(CAP_PROP_POS_MSEC, pos[i] + n * 1000);
+		}
+	}
+*/
 }
 
 
@@ -69,5 +97,22 @@ void pos3d_solve(Mat& m1, Mat& m2, Point2d& pt1, Point2d& pt2, Mat& pt)
 	B.at<double>(2, 0) = -(m2.at<double>(0, 3) - pt2.x * m2.at<double>(2, 3));
 	B.at<double>(3, 0) = -(m2.at<double>(1, 3) - pt2.y * m2.at<double>(2, 3));	
 
-	solve(A, B, pt, DECOMP_SVD);
+	solve(A, B, pt, DECOMP_QR);
+}
+
+void save_current(CamFrame camera[]){
+	imwrite("temp/camera1/frame1.jpg",camera[0].orig);
+	imwrite("temp/camera1/fgMask1.jpg",camera[0].fgMask);
+	imwrite("temp/camera1/fg1.jpg",camera[0].fg);
+	imwrite("temp/camera1/colMask1.jpg",camera[0].colMask);
+	imwrite("temp/camera1/morph_colMask1.jpg",camera[0].morph_colMask);
+	imwrite("temp/camera1/canny1.jpg",camera[0].canny);
+	imwrite("temp/camera1/contour_plot1.jpg",camera[0].contour_plot);
+	imwrite("temp/camera2/frame2.jpg",camera[1].orig);
+	imwrite("temp/camera2/fgMask2.jpg",camera[1].fgMask);
+	imwrite("temp/camera2/fg2.jpg",camera[1].fg);
+	imwrite("temp/camera2/colMask2.jpg",camera[1].colMask);
+	imwrite("temp/camera2/morph_colMask2.jpg",camera[1].morph_colMask);
+	imwrite("temp/camera2/canny2.jpg",camera[1].canny);
+	imwrite("temp/camera2/contour_plot2.jpg",camera[1].contour_plot);
 }

@@ -55,6 +55,7 @@ public:
 	CamFrame();
 	CamFrame(char* calib, char* video);
 	void getframe();					//gets a frame from video and stores in orig
+	void nextsecond();
 	void subtBgColDet();				//background subtractor and color detector
 	void contourDetection();			//contour detector
 	void findcenter();					//find center of ball after bgsub and col det. and contour det.
@@ -65,5 +66,5 @@ void show(CamFrame& camera, int window);				//displaying each frame
 void get3dloc(CamFrame camera[], fstream& output);		//gives 3d location of ball in each frame
 void pos3d_solve(Mat& m1, Mat& m2, Point2d& pt1, Point2d& pt2, Mat& pt);	//gives 3d location gives projection matrix and image
 																			//						coordinates of pts. in 2 images
-
+void save_current(CamFrame camera[]);
 

@@ -14,10 +14,10 @@
 using namespace cv;
 using namespace std;
 const int n_cols = 7;
-const int n_rows = 7;
+const int n_rows = 10;
 const int n_points = n_cols * n_rows;
-const float sqSize = 2.35;
-const int n_boards = 8;
+const float sqSize = 7.5;
+int n_boards;
 const Size board_size = Size(n_cols, n_rows);
 Mat img;
 Mat img_gray;
@@ -31,8 +31,8 @@ bool found;
 Size image_size;
 
 void initObj_pts(vector<vector<Point3f> > &obj_pts){
-	for (int i = 0; i < n_cols; i++)				
-		for (int j = 0; j < n_rows; j++)
+	for (int i = 0; i < n_rows; i++)				
+		for (int j = 0; j < n_cols; j++)
 			obj_pts[0].push_back(Point3f(j * sqSize, i * sqSize, 0));
 	obj_pts.resize(n_boards, obj_pts[0]);
 }
@@ -42,8 +42,11 @@ int main(int argc, char** argv){
 		return 1;
 	}
 	else{
+		cout << "Enter number of images";
+		cin >> n_boards;
 		int flag = 0;
-		flag |= CALIB_FIX_K3;
+		flag |= CALIB_FIX_K3 | CALIB_ZERO_TANGENT_DIST |CALIB_FIX_K2 | CALIB_FIX_K1;
+
 		char filename[50];
 		vector<vector<Point3f> > obj_pts(1);
 		vector<vector<Point2f> > img_pts;
@@ -61,6 +64,10 @@ int main(int argc, char** argv){
 			img_pts.push_back(pointBuf);
 		}
 		image_size = Size(img.cols, img.rows);
+		for (int i = 0; i < n_boards; i++){
+			obj_pts[i].resize(49);
+			img_pts[i].resize(49);
+		}	
 		rms = calibrateCamera(obj_pts, img_pts, image_size, camera_matrix, dist_coeff, rvecs, tvecs,flag);
 		Mat optCamMat = getOptimalNewCameraMatrix(camera_matrix,dist_coeff,image_size,1,image_size);
 		Mat map1, map2;

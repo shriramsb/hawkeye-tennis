@@ -19,7 +19,7 @@ Camera::Camera(char* calib, char* video){							//calib - path to xml file
 	{
 		for(int j = 0; j < 3; j++)
 			rotaugtrans.at<double>(i, j) = rot_vec.at<double>(i, j);
-		rotaugtrans.at<double>(i, 3) = tvec.at<double>(i, 1);
+		rotaugtrans.at<double>(i, 3) = tvec.at<double>(i, 0);
 	}
 	proj_mat = optCamMat * rotaugtrans;
 	learnBg();
@@ -38,11 +38,14 @@ void Camera::learnBg(){
 	end *= 1000;
 	cap.set(CAP_PROP_POS_MSEC,start);				
 	while(end - cap.get(CAP_PROP_POS_MSEC) > 1000){
-		cap.read(temp);
+		cap.read(temp1);
+		remap(temp1, temp, mapx, mapy, INTER_LINEAR);
 		medianBlur(temp, temp, kernel_size);
-		pMOG2->apply(temp, temp1);
+		pMOG2->apply(temp, temp1);							//updating background model
+		temp.release();
+		temp1.release();
 	}
-	cap.set(CAP_PROP_POS_FRAMES,0);							//set the pointer back to start to sync later
+	//cap.set(CAP_PROP_POS_FRAMES,0);							//set the pointer back to start to sync later
 }
 
 
