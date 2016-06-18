@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 
+const double DX = 0.1;
 class SplineFit
 {
     std::vector<double> _x;
@@ -11,7 +12,7 @@ class SplineFit
     std::vector<double> _finalY;
     int degree;
     int n;
-    int nPoints;
+    int n_before,n_after;
     Eigen::MatrixXd A;
     std::vector<double> B;
     std::vector<double> b,c,d;
@@ -24,8 +25,9 @@ class SplineFit
     double fyQuad(double x);
     double fyCubic(double x);
     public:
-    SplineFit(int deg=2, int np=10);
+    SplineFit(int deg=2, int nBefore=10, int nAfter=10);
     std::vector<double> interpolate();
     void getXAndY(double x, double y);
     void print();
+    double x_min, x_max;
 };

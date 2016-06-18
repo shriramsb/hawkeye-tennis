@@ -12,10 +12,11 @@ def plotFn(fileName):
         y.append(lineData[1])
         z.append(lineData[2])
     plt.plot(y,z,'bo')
+    plt.plot(y,x,'ro')
  #   fig = plt.figure()
   #  ax = plt.axes(projection='3d')
    # ax.scatter(x,y,z,'-b')
     plt.show()
 
 if __name__=="__main__":
-    plotFn("../cubic.txt")
+    plotFn("../pts.txt")
