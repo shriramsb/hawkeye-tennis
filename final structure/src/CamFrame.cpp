@@ -1,12 +1,13 @@
 #include <detection.h>
 
 CamFrame::CamFrame(){
-}
-CamFrame::CamFrame(char* calib, char* video) : cam(calib, video){
 
 }
-
-void CamFrame::getframe(){
+CamFrame::CamFrame(char* calib, char* video, Scalar l, Scalar u) : cam(calib, video){
+	lb = l;
+	ub = u;
+}
+void CamFrame::clear(){
 	orig.release();
 	fgMask.release();
 	fg.release();
@@ -14,8 +15,19 @@ void CamFrame::getframe(){
 	morph_colMask.release();
 	canny.release();
 	contour_plot.release();
+	contours.clear();
+	hierarchy.clear();
+	minRect.clear();
+	minEllipse.clear();
+	minCircle.clear();
+	constraint_center.clear();
+}
+
+void CamFrame::getframe(){
 	Mat temp;
 	temp.release();
+	frame_no = cam.cap.get(CAP_PROP_POS_FRAMES);
+	frame_time = cam.cap.get(CAP_PROP_POS_MSEC);
 	cam.cap.read(temp);
 
 	remap(temp, orig, cam.mapx, cam.mapy, INTER_LINEAR);
@@ -32,18 +44,17 @@ void CamFrame::subtBgColDet(){
 	medianBlur(orig, orig, kernel_size);
 	
 	cam.pMOG2->apply(orig, fgMask, 0);						//without updating background model getting fgMask
+	threshold(fgMask, fgMask, 230, 255, THRESH_BINARY);
 	orig.copyTo(fg, fgMask);
 	Mat fg_hsv;
 	fg_hsv.release();
 	cvtColor(fg, fg_hsv, COLOR_BGR2HSV);
-	Scalar lb = Scalar(51/2, 59, 146);
-	Scalar ub = Scalar(81/2, 255, 255);
+	
 	inRange(fg_hsv, lb, ub, colMask);						//colMask by filtering fg 
-	imwrite("colMask.jpg", colMask);
 
 }
 
-void CamFrame::contourDetection(){
+bool CamFrame::contourDetection(){
 	int thresh = 200;										
 	int thresh_max_val = 255;
 	int n_erode = 1;
@@ -73,15 +84,21 @@ void CamFrame::contourDetection(){
 	}
 	orig.copyTo(contour_plot);
 	Scalar red = Scalar(0,0,255);
+	bool found_contour = false;
 	for (int i = 0; i < contours.size(); i++){								//drawing contours which satisfy constraint 
-		Point2f center1 = minEllipse[i].center;
-		Size2f s = minEllipse[i].size;
+		Point2f center1 = minRect[i].center;
+		Size2f s = minRect[i].size;
 		if(contours[i].size() > 5 && s.width/s.height > 0.7 && s.width/s.height < 1.4 && s.width > 5 && s.height > 5){
 			circle(contour_plot, minCircle[i].centre,minCircle[i].radius, red);
-			circle(contour_plot, minCircle[i].centre, 1, red);
+			constraint_center.push_back(minCircle[i].centre);						//assuming it creates a copy of minCircle[i] and 
+			circle(contour_plot, minCircle[i].centre, 1, red);				//						stores it
+			found_contour = true;
 		}
 	}
+	eliminate_duplication(constraint_center);
+	return found_contour;
 }
+
 
 void CamFrame::findcenter(){
 	/*if (contours.size() == 1){
@@ -98,7 +115,7 @@ void CamFrame::findcenter(){
 	}*/
 	for (int i = 0; i < contours.size(); i++){				//prints all selected contours satisfying constraint and asks to
 		Point2f center1 = minCircle[i].centre;				//			choose one containing center
-		Size2f s = minEllipse[i].size;
+		Size2f s = minRect[i].size;
 		if(contours[i].size() > 5 && s.width/s.height > 0.7 && s.width/s.height < 1.4 && s.width > 5 && s.height > 5){
 			cout << i << endl;
 			cout << center1.x << " " << center1.y << endl;

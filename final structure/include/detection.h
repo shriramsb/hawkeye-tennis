@@ -17,7 +17,7 @@
 using namespace cv;
 using namespace std;
 
-const int kernel_size = 5;
+const int kernel_size = 3;
 struct Circle{
 	Point2f centre;
 	float radius;
@@ -46,20 +46,33 @@ public:
 	Mat morph_colMask;					//after morphological operations(erode, dilate...)
 	Mat canny;							//canny edge detector applied to morph_colMask
 	Mat contour_plot;					//contour plot of detected contours
+	float frame_no, frame_time;
 	vector<vector<Point> > contours;	
 	vector<Vec4i> hierarchy;
 	vector<RotatedRect> minRect;		//min. bounding rect. of contour
 	vector<RotatedRect> minEllipse;		//min. ellipse of contour
 	vector<Circle> minCircle;			//min. bounding circle of contour
+	vector<Point2f> constraint_center;	//stores centres of bdd.circles of contours satisfying the constraint
 	Point2d center; 					//center of ball in the frame
+	Scalar lb, ub;
 	CamFrame();
-	CamFrame(char* calib, char* video);
+	CamFrame(char* calib, char* video, Scalar l, Scalar u);
 	void getframe();					//gets a frame from video and stores in orig
 	void nextsecond();
 	void subtBgColDet();				//background subtractor and color detector
-	void contourDetection();			//contour detector
+	bool contourDetection();			//contour detector
 	void findcenter();					//find center of ball after bgsub and col det. and contour det.
+	void clear();
 };
+
+/*class point_details{
+public:
+	Mat pt_3d;
+	Mat pt[2];
+	float frame_no[2];
+	float frame_time[2];
+	//point_details(Mat& a, Mat&b, Mat&c, float f[], float t[]);
+};*/
 
 void syncVideo(CamFrame camera[]);
 void show(CamFrame& camera, int window);				//displaying each frame
@@ -67,4 +80,4 @@ void get3dloc(CamFrame camera[], fstream& output);		//gives 3d location of ball 
 void pos3d_solve(Mat& m1, Mat& m2, Point2d& pt1, Point2d& pt2, Mat& pt);	//gives 3d location gives projection matrix and image
 																			//						coordinates of pts. in 2 images
 void save_current(CamFrame camera[]);
-
+void eliminate_duplication(vector<Point2f>& c);								//to eliminate two closely detected contours

@@ -20,7 +20,9 @@ int main(int argc, char** argv){
 		cap.read(frame);
 		imshow("frame", frame);
 		c = waitKey(0);
-		if (c == 's')
+		if (c == 's'){
 			imwrite(argv[2], frame);
+			c = 'p';
+		}
 	}
 }

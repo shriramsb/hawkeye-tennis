@@ -9,10 +9,9 @@ argv[5] - path the output file */
 int main(int argc, char** argv){
 	CamFrame camera[2];
 	fstream output;
-	output.open(argv[5], ios::app);
-	output << endl << endl;								//to separate from previously written output
-	camera[0] = CamFrame(argv[1], argv[3]);				
-	camera[1] = CamFrame(argv[2], argv[4]);
+	output.open(argv[5], ios::out);
+	camera[0] = CamFrame(argv[1], argv[3], Scalar(51/2, 59, 40), Scalar(85/2, 255, 255));				
+	camera[1] = CamFrame(argv[2], argv[4], Scalar(51/2, 59, 58), Scalar(85/2, 255, 255));
 	//namedWindow("camera1frame", WINDOW_NORMAL);
 	//namedWindow("camera2frame", WINDOW_NORMAL);
 	namedWindow("camera1colMask", WINDOW_NORMAL);
@@ -24,7 +23,7 @@ int main(int argc, char** argv){
 	syncVideo(camera);									//manual synchronization video from both cameras
 	char c;
 	int t;
-	int wait = 30;
+	int wait = 1;
 	while(true){
 		get3dloc(camera, output);						//prints 3d position of ball center in next frame and write to file
 		c = waitKey(wait);
@@ -55,7 +54,7 @@ int main(int argc, char** argv){
 		}
 		else if (c == '6'){
 			wait--;
-			wait = wait > 0 ? wait : 0;
+			wait = wait > 1 ? wait : 1;
 			c = '0';
 		}
 		else if (c == 'f'){
@@ -66,9 +65,6 @@ int main(int argc, char** argv){
 				camera[i].cam.cap.set(CAP_PROP_POS_MSEC, pos[i] + t * 1000);
 			}
 			c = '0';
-		}
-		else if (c == 'u'){
-
 		}
 	}
 	output.close();

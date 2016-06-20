@@ -33,8 +33,8 @@ void syncVideo(CamFrame camera[]){				//manual synchronization of video
 			cout << camera[0].cam.cap.get(CAP_PROP_POS_FRAMES) << endl << camera[1].cam.cap.get(CAP_PROP_POS_FRAMES);
 		}
 		else if (c == 'r'){
-			camera[0].cam.cap.set(CAP_PROP_POS_FRAMES, 4065);
-			camera[1].cam.cap.set(CAP_PROP_POS_FRAMES, 4228);
+			camera[0].cam.cap.set(CAP_PROP_POS_FRAMES, 1935);
+			camera[1].cam.cap.set(CAP_PROP_POS_FRAMES, 1921);
 		}
 		c = waitKey(0);
 	}
@@ -55,13 +55,28 @@ void show(CamFrame& camera, int window){					//display frame
 
 }
 void get3dloc(CamFrame camera[], fstream& output){			
+	
 	for (int i = 0; i < 2; i++){
+		camera[i].clear();
 		camera[i].getframe();
 		camera[i].subtBgColDet();
 		camera[i].contourDetection();
 		show(camera[i], i + 1);
 		//camera[i].findcenter();
 	}
+	bool can_find3d = true;
+	Mat pt3d = Mat::zeros(3,1,CV_64F);
+	for (int i = 0; i < 2; i++){
+		if (camera[i].constraint_center.size() == 1)
+			camera[i].center = camera[i].constraint_center[0];
+		else
+			can_find3d = false;
+	}
+	if (can_find3d)
+		pos3d_solve(camera[0].cam.proj_mat, camera[1].cam.proj_mat, camera[0].center, camera[1].center, pt3d);	
+	
+	cout << pt3d;
+	
 	/*Mat pt3d;
 	pos3d_solve(camera[0].cam.proj_mat, camera[1].cam.proj_mat, camera[0].center, camera[1].center, pt3d);
 	cout << pt3d;
@@ -115,4 +130,35 @@ void save_current(CamFrame camera[]){
 	imwrite("temp/camera2/morph_colMask2.jpg",camera[1].morph_colMask);
 	imwrite("temp/camera2/canny2.jpg",camera[1].canny);
 	imwrite("temp/camera2/contour_plot2.jpg",camera[1].contour_plot);
+}
+
+void eliminate_duplication(vector<Point2f>& c){
+	vector<Point2f> temp;
+	float dist_threshold = 2;
+	vector<bool> copied(c.size(), false);
+	for(int i = 0; i < c.size(); i++){
+		if (copied[i])
+			continue;
+		int count = 0;
+		int pos;
+		for(int j = i + 1; j < c.size(); j++){
+			if (copied[j])
+				continue;
+			if (norm(c[i] - c[j]) < dist_threshold){
+				count++;
+				pos = j;
+			}
+		}
+		if (count != 1){
+			temp.push_back(c[i]);
+			copied[i] = true;
+		}
+		else if (count == 1){
+			temp.push_back((c[i] + c[pos]) / 2);
+			copied[i] = copied[pos] = true;
+
+		}
+	}
+	c.clear();
+	c = temp;
 }
