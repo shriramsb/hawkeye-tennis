@@ -1,6 +1,24 @@
 #include <detection.h>
 
+Mat fund_mat;
 
+point_details::point_details(){
+	Mat temp = Mat::zeros(3,1,CV_64F);
+	pt3d = Point3d(temp);
+	for (int i = 0; i < 2; i++){
+		pt[i] = Point2d(-1,-1);
+		frame_no[i] = -1;
+		frame_time[i] = -1;
+	}
+}
+point_details::point_details(Mat& pt_3d, CamFrame c[]){
+	pt3d = Point3d(pt_3d.clone());
+	for (int i = 0; i < 2; i++){
+		pt[i] = c[i].center;
+		frame_no[i] = c[i].frame_no;
+		frame_time[i] = c[i].frame_time;
+	}
+}
 void syncVideo(CamFrame camera[]){				//manual synchronization of video 
 	namedWindow("camera1", WINDOW_NORMAL);
 	namedWindow("camera2", WINDOW_NORMAL);
@@ -54,7 +72,7 @@ void show(CamFrame& camera, int window){					//display frame
 	imshow(windowname, camera.contour_plot);
 
 }
-void get3dloc(CamFrame camera[], fstream& output){			
+void get3dloc(CamFrame camera[], fstream& output, bool epipolar){			
 	
 	for (int i = 0; i < 2; i++){
 		camera[i].clear();
@@ -64,6 +82,9 @@ void get3dloc(CamFrame camera[], fstream& output){
 		show(camera[i], i + 1);
 		//camera[i].findcenter();
 	}
+	if (epipolar && camera[0].constraint_center.size() >= 1 && camera[1].constraint_center.size() >= 1){
+		epipolar_constraint(camera[0].constraint_center, camera[1].constraint_center);
+	}
 	bool can_find3d = true;
 	Mat pt3d = Mat::zeros(3,1,CV_64F);
 	for (int i = 0; i < 2; i++){
@@ -72,10 +93,23 @@ void get3dloc(CamFrame camera[], fstream& output){
 		else
 			can_find3d = false;
 	}
-	if (can_find3d)
+	if (can_find3d){
 		pos3d_solve(camera[0].cam.proj_mat, camera[1].cam.proj_mat, camera[0].center, camera[1].center, pt3d);	
+		cout << camera[0].center << camera[1].center << pt3d << endl << endl;
+		point_details temp(pt3d, camera);
+		output.seekg(camera[0].frame_no * sizeof(temp));			//will take a lot of space but easy to read
+		output.write((char*)&temp, sizeof(temp));
+	}
+	else{
+		point_details temp;
+		cout << pt3d;
+		output.seekg(camera[0].frame_no * sizeof(temp));
+		output.write((char*)&temp, sizeof(temp));
+	}
+	output.close();
+
 	
-	cout << pt3d;
+	
 	
 	/*Mat pt3d;
 	pos3d_solve(camera[0].cam.proj_mat, camera[1].cam.proj_mat, camera[0].center, camera[1].center, pt3d);
@@ -161,4 +195,41 @@ void eliminate_duplication(vector<Point2f>& c){
 	}
 	c.clear();
 	c = temp;
+}
+
+
+void getFundMat(char f[]){
+	FileStorage g(f, FileStorage::READ);
+	g["fund_mat"] >> fund_mat;
+}
+
+void epipolar_constraint(vector<Point2f>& cam1pts, vector<Point2f>& cam2pts){
+	float dist_threshold = 10;
+	vector<Point3f> cam_lines1;
+	vector<bool> to_remove[2];
+	computeCorrespondEpilines(cam1pts, 1, fund_mat, cam_lines1);
+	to_remove[0].resize(cam1pts.size(), true);
+	to_remove[1].resize(cam2pts.size(), true);
+	for (int i = 0; i < cam2pts.size(); i++)
+		for (int j = 0; j < cam1pts.size(); j++)
+			if (dist(cam2pts[i], cam_lines1[j]) < dist_threshold){
+				to_remove[0][j] = false;
+				to_remove[1][i] = false;
+			}
+		
+	
+	for (int i = to_remove[0].size() - 1; i >= 0; i--)
+		if (to_remove[0][i] == true)
+			cam1pts.erase(cam1pts.begin() + i);
+
+	
+	for (int i = to_remove[1].size() - 1; i >= 0; i--)
+		if (to_remove[1][i] == true)
+			cam2pts.erase(cam2pts.begin() + i);	
+}
+
+float dist(Point2f pt, Point3f line){
+	float d;
+	d = abs(line.x * pt.x + line.y * pt.y + line.z);
+	return d;
 }

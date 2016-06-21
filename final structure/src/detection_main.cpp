@@ -7,6 +7,17 @@ argv[5] - path the output file */
 #include <detection.h>
 
 int main(int argc, char** argv){
+	cout << "Want to apply epipolar constraint?(y/n)";
+	char ch;
+	cin >> ch;
+	bool epipolar = false;
+	if (ch == 'y'){
+		epipolar = true;
+		cout << "Source file for fundamental matrix?";
+		char f[80];
+		cin >> f;
+		getFundMat(f);
+	}
 	CamFrame camera[2];
 	fstream output;
 	output.open(argv[5], ios::out);
@@ -25,7 +36,8 @@ int main(int argc, char** argv){
 	int t;
 	int wait = 1;
 	while(true){
-		get3dloc(camera, output);						//prints 3d position of ball center in next frame and write to file
+		get3dloc(camera, output, epipolar);						//prints 3d position of ball center in next frame and write to file
+		output.open(argv[5], ios::app);
 		c = waitKey(wait);
 		if (c == 'p'){
 			c = waitKey(0);

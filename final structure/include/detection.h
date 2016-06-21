@@ -62,22 +62,28 @@ public:
 	void subtBgColDet();				//background subtractor and color detector
 	bool contourDetection();			//contour detector
 	void findcenter();					//find center of ball after bgsub and col det. and contour det.
-	void clear();
+	void clear();						//clear memory allocated to member Mat object and vector
 };
 
-/*class point_details{
+class point_details{
 public:
-	Mat pt_3d;
-	Mat pt[2];
+	Point3d pt3d;			//not able to write Mat object directly to file
+	Point2d pt[2];
 	float frame_no[2];
 	float frame_time[2];
-	//point_details(Mat& a, Mat&b, Mat&c, float f[], float t[]);
-};*/
+	point_details();
+	point_details(Mat& a, CamFrame c[]);
+};
 
 void syncVideo(CamFrame camera[]);
 void show(CamFrame& camera, int window);				//displaying each frame
-void get3dloc(CamFrame camera[], fstream& output);		//gives 3d location of ball in each frame
+void get3dloc(CamFrame camera[], fstream& output, bool epipolar);		//gives 3d location of ball in each frame
 void pos3d_solve(Mat& m1, Mat& m2, Point2d& pt1, Point2d& pt2, Mat& pt);	//gives 3d location gives projection matrix and image
 																			//						coordinates of pts. in 2 images
 void save_current(CamFrame camera[]);
+
 void eliminate_duplication(vector<Point2f>& c);								//to eliminate two closely detected contours
+
+void getFundMat(char f[]);
+void epipolar_constraint(vector<Point2f>& cam1pts, vector<Point2f>& cam2pts);
+float dist(Point2f pt, Point3f line);
