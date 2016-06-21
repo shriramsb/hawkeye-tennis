@@ -68,6 +68,17 @@ int main(int argc, char** argv){
 		Mat optCamMat = getOptimalNewCameraMatrix(camera_matrix,dist_coeff,image_size,1,image_size);
 		Mat map1, map2;
 		initUndistortRectifyMap(camera_matrix, dist_coeff, Mat(),optCamMat,image_size,CV_16SC2,map1,map2);
+		Mat rot_vec;
+		Mat proj_mat;
+		Rodrigues(rvecs[n_boards - 1], rot_vec);
+		Mat rotaugtrans = Mat::zeros(3, 4, CV_64F);
+		for (int i = 0; i < 3; i++)
+		{
+			for(int j = 0; j < 3; j++)
+				rotaugtrans.at<double>(i, j) = rot_vec.at<double>(i, j);
+			rotaugtrans.at<double>(i, 3) = tvecs[n_boards - 1].at<double>(i, 0);
+		}
+		proj_mat = optCamMat * rotaugtrans;
 		FileStorage f(argv[3], FileStorage::WRITE);
 		f << "Camera_matrix" << camera_matrix;
 		f << "OptimalCamMatrix" << optCamMat;
@@ -77,6 +88,7 @@ int main(int argc, char** argv){
 		f << "tvec" << tvecs[n_boards - 1];
 		f << "undist_mapx" << map1;
 		f << "undist_mapy" << map2;
+		f << "proj_mat" << proj_mat;
 		f.release();
 		
 		char dest_file[50];

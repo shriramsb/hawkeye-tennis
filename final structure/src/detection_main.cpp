@@ -37,7 +37,7 @@ int main(int argc, char** argv){
 	int wait = 1;
 	while(true){
 		get3dloc(camera, output, epipolar);						//prints 3d position of ball center in next frame and write to file
-		output.open(argv[5], ios::app);
+		output.open(argv[5], ios::out | ios::in);
 		c = waitKey(wait);
 		if (c == 'p'){
 			c = waitKey(0);

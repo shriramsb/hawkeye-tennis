@@ -1,24 +1,8 @@
 #include <detection.h>
-
+#include "point_details.h"
 Mat fund_mat;
 
-point_details::point_details(){
-	Mat temp = Mat::zeros(3,1,CV_64F);
-	pt3d = Point3d(temp);
-	for (int i = 0; i < 2; i++){
-		pt[i] = Point2d(-1,-1);
-		frame_no[i] = -1;
-		frame_time[i] = -1;
-	}
-}
-point_details::point_details(Mat& pt_3d, CamFrame c[]){
-	pt3d = Point3d(pt_3d.clone());
-	for (int i = 0; i < 2; i++){
-		pt[i] = c[i].center;
-		frame_no[i] = c[i].frame_no;
-		frame_time[i] = c[i].frame_time;
-	}
-}
+
 void syncVideo(CamFrame camera[]){				//manual synchronization of video 
 	namedWindow("camera1", WINDOW_NORMAL);
 	namedWindow("camera2", WINDOW_NORMAL);
@@ -61,6 +45,9 @@ void syncVideo(CamFrame camera[]){				//manual synchronization of video
 }
 
 void show(CamFrame& camera, int window){					//display frame
+	stringstream ss;
+	ss << camera.frame_no;
+	putText(camera.contour_plot, ss.str(), Point(50,50),FONT_HERSHEY_SIMPLEX, 1, Scalar(0,255,0));
 	char windowname[50];
 	//sprintf(windowname, "camera%dframe",window);
 	//imshow(windowname, camera.orig);
@@ -94,6 +81,10 @@ void get3dloc(CamFrame camera[], fstream& output, bool epipolar){
 			can_find3d = false;
 	}
 	if (can_find3d){
+		for (int i = 0; i < 2; i++){
+			circle(camera[i].contour_plot, camera[i].center, 2, Scalar(255,0,0));
+			show(camera[i], i + 1);
+		}
 		pos3d_solve(camera[0].cam.proj_mat, camera[1].cam.proj_mat, camera[0].center, camera[1].center, pt3d);	
 		cout << camera[0].center << camera[1].center << pt3d << endl << endl;
 		point_details temp(pt3d, camera);
@@ -101,7 +92,7 @@ void get3dloc(CamFrame camera[], fstream& output, bool epipolar){
 		output.write((char*)&temp, sizeof(temp));
 	}
 	else{
-		point_details temp;
+		point_details temp(pt3d, camera);
 		cout << pt3d;
 		output.seekg(camera[0].frame_no * sizeof(temp));
 		output.write((char*)&temp, sizeof(temp));
