@@ -111,29 +111,29 @@ spline_fit/fast:
 	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/build
 .PHONY : spline_fit/fast
 
-src/main_fit.o: src/main_fit.cpp.o
-.PHONY : src/main_fit.o
+src/main_time.o: src/main_time.cpp.o
+.PHONY : src/main_time.o
 
 # target to build an object file
-src/main_fit.cpp.o:
-	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/main_fit.cpp.o
-.PHONY : src/main_fit.cpp.o
+src/main_time.cpp.o:
+	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/main_time.cpp.o
+.PHONY : src/main_time.cpp.o
 
-src/main_fit.i: src/main_fit.cpp.i
-.PHONY : src/main_fit.i
+src/main_time.i: src/main_time.cpp.i
+.PHONY : src/main_time.i
 
 # target to preprocess a source file
-src/main_fit.cpp.i:
-	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/main_fit.cpp.i
-.PHONY : src/main_fit.cpp.i
+src/main_time.cpp.i:
+	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/main_time.cpp.i
+.PHONY : src/main_time.cpp.i
 
-src/main_fit.s: src/main_fit.cpp.s
-.PHONY : src/main_fit.s
+src/main_time.s: src/main_time.cpp.s
+.PHONY : src/main_time.s
 
 # target to generate assembly for a file
-src/main_fit.cpp.s:
-	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/main_fit.cpp.s
-.PHONY : src/main_fit.cpp.s
+src/main_time.cpp.s:
+	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/main_time.cpp.s
+.PHONY : src/main_time.cpp.s
 
 src/spline_fit.o: src/spline_fit.cpp.o
 .PHONY : src/spline_fit.o
@@ -168,9 +168,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... spline_fit"
-	@echo "... src/main_fit.o"
-	@echo "... src/main_fit.i"
-	@echo "... src/main_fit.s"
+	@echo "... src/main_time.o"
+	@echo "... src/main_time.i"
+	@echo "... src/main_time.s"
 	@echo "... src/spline_fit.o"
 	@echo "... src/spline_fit.i"
 	@echo "... src/spline_fit.s"

@@ -4,6 +4,7 @@ def plotFn(fileName):
     x = []
     y = []
     z = []
+    t = []
     f = open(fileName,'r')
     data = f.readlines()
     for line in data:
@@ -11,12 +12,14 @@ def plotFn(fileName):
         x.append(lineData[0])
         y.append(lineData[1])
         z.append(lineData[2])
-    plt.plot(y,z,'bo')
-    plt.plot(y,x,'ro')
+        t.append(lineData[3])
+    plt.plot(t,x,'bo')
+    plt.plot(t,y,'ro')
+    plt.plot(t,z,'go')
  #   fig = plt.figure()
   #  ax = plt.axes(projection='3d')
    # ax.scatter(x,y,z,'-b')
     plt.show()
 
 if __name__=="__main__":
-    plotFn("../pts.txt")
+    plotFn("../time.txt")

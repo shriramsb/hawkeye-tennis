@@ -12,14 +12,14 @@ SplineFit::SplineFit(int deg, int nBefore, int nAfter)
 
 void SplineFit::getXAndY(double x, double y)
 {
-    _x.push_back(x);
-    _y.push_back(y);
+    _x.emplace_back(x);
+    _y.emplace_back(y);
     n++;
 
     if(n>=2)
     {
         double dx = _x[n-1] - _x[n-2];
-        h.push_back(dx);
+        h.emplace_back(dx);
     }
     x_min = _x[0] - n_before*DX;
     x_max = _x[n-1] + n_after*DX;
@@ -45,7 +45,7 @@ void SplineFit::linearFit()
     for(double x=_x[n-2];x<=_x[n-1];x+=DX)
     {
         double y = _y[n-2] + m*(x-_x[n-2]);
-        _finalY.push_back(y);
+        _finalY.emplace_back(y);
     }
 }
 
@@ -56,7 +56,7 @@ void SplineFit::quadraticFit()
     for(double x=x_min;x<x_max;x+=DX)
     {
         double y = fyQuad(x);
-        _finalY.push_back(y);
+        _finalY.emplace_back(y);
     }
 }
 
@@ -67,7 +67,7 @@ void SplineFit::cubicFit()
     for(double x=x_min;x<x_max;x+=DX)
     {
         double y = fyCubic(x);
-        _finalY.push_back(y);
+        _finalY.emplace_back(y);
     }
 }
 
@@ -78,12 +78,12 @@ void SplineFit::fitYCubic()
         A.resize(2,2);
         B.resize(0);
         A(0,0)=1;A(1,0)=0;A(1,1)=1;A(0,1)=0;
-        B.push_back(0);
-        B.push_back(0);
-        b.push_back((_y[1]-_y[0])/h[0]);
-        c.push_back(0);
-        c.push_back(0);
-        d.push_back(0);
+        B.emplace_back(0);
+        B.emplace_back(0);
+        b.emplace_back((_y[1]-_y[0])/h[0]);
+        c.emplace_back(0);
+        c.emplace_back(0);
+        d.emplace_back(0);
     }
     else if(n>=3)
     {
@@ -106,7 +106,7 @@ void SplineFit::fitYCubic()
 
         //B->n-1
         B[n-2] = (3.0/h[n-2])*(_y[n-1]-_y[n-2]) -(3.0/h[n-3])*(_y[n-2]-_y[n-3]);
-        B.push_back(0);
+        B.emplace_back(0);
         // std::cout<<"4\n";
         //B->n
 
@@ -120,18 +120,18 @@ void SplineFit::fitYCubic()
             ci = 0;
             for(int j=0;j<n;j++)
                 ci += ((aInverse(i,j))*B[j]);
-            c.push_back(ci);
+            c.emplace_back(ci);
         }
         //std::cout<<"6\n";
 
         b.resize(0);
         for(int i=0;i<n-1;i++)
-            b.push_back(((_y[i+1]-_y[i])/h[i])-(h[i]*(2.0*c[i]+c[i+1]))/3.0);
+            b.emplace_back(((_y[i+1]-_y[i])/h[i])-(h[i]*(2.0*c[i]+c[i+1]))/3.0);
           //std::cout<<"7\n";
 
         d.resize(0);
         for(int i=0;i<n-1;i++)
-            d.push_back((c[i+1]-c[i])/(3.0*h[i]));
+            d.emplace_back((c[i+1]-c[i])/(3.0*h[i]));
          //std::cout<<"8\n";
     }
 }
@@ -142,9 +142,9 @@ void SplineFit::fitYQuad()
     {
         A.resize(1,1);
         A(0,0)=1;
-        B.push_back(0);
-        b.push_back((_y[1]-_y[0])/h[0]);
-        c.push_back(0);
+        B.emplace_back(0);
+        b.emplace_back((_y[1]-_y[0])/h[0]);
+        c.emplace_back(0);
     }
     else if(n>=3)
     {
@@ -162,7 +162,7 @@ void SplineFit::fitYQuad()
 
         //B->n-2
         float b1 = (_y[n-1]-_y[n-2])/h[n-2]-(_y[n-2]-_y[n-3])/h[n-3];
-        B.push_back(b1);
+        B.emplace_back(b1);
         //        std::cout<<"----------------------b1"<<b1;
         //B->n-1
 
@@ -177,13 +177,13 @@ void SplineFit::fitYQuad()
             ci = 0;
             for(int j=0;j<n-1;j++)
                 ci += ((aInverse(i,j))*B[j]);
-            c.push_back(ci);
+            c.emplace_back(ci);
         }
         //std::cout<<"6\n";
 
         b.resize(0);
         for(int i=0;i<n-1;i++)
-            b.push_back(((_y[i+1]-_y[i])/h[i])-(h[i]*c[i]));
+            b.emplace_back(((_y[i+1]-_y[i])/h[i])-(h[i]*c[i]));
         //  std::cout<<"7\n";
 
     }

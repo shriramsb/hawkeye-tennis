@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/hp/ITSP2k16-HawkEyes/interpolation/src/main_fit.cpp
+/home/hp/ITSP2k16-HawkEyes/interpolation/src/main_time.cpp
 interpolation/spline_fit.h
 -
 interpolation/pose.h

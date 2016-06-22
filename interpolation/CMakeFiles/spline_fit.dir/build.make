@@ -72,39 +72,39 @@ CMakeFiles/spline_fit.dir/src/spline_fit.cpp.o.provides: CMakeFiles/spline_fit.d
 
 CMakeFiles/spline_fit.dir/src/spline_fit.cpp.o.provides.build: CMakeFiles/spline_fit.dir/src/spline_fit.cpp.o
 
-CMakeFiles/spline_fit.dir/src/main_fit.cpp.o: CMakeFiles/spline_fit.dir/flags.make
-CMakeFiles/spline_fit.dir/src/main_fit.cpp.o: src/main_fit.cpp
+CMakeFiles/spline_fit.dir/src/main_time.cpp.o: CMakeFiles/spline_fit.dir/flags.make
+CMakeFiles/spline_fit.dir/src/main_time.cpp.o: src/main_time.cpp
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/hp/ITSP2k16-HawkEyes/interpolation/CMakeFiles $(CMAKE_PROGRESS_2)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/spline_fit.dir/src/main_fit.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/spline_fit.dir/src/main_fit.cpp.o -c /home/hp/ITSP2k16-HawkEyes/interpolation/src/main_fit.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/spline_fit.dir/src/main_time.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/spline_fit.dir/src/main_time.cpp.o -c /home/hp/ITSP2k16-HawkEyes/interpolation/src/main_time.cpp
 
-CMakeFiles/spline_fit.dir/src/main_fit.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/spline_fit.dir/src/main_fit.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/hp/ITSP2k16-HawkEyes/interpolation/src/main_fit.cpp > CMakeFiles/spline_fit.dir/src/main_fit.cpp.i
+CMakeFiles/spline_fit.dir/src/main_time.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/spline_fit.dir/src/main_time.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/hp/ITSP2k16-HawkEyes/interpolation/src/main_time.cpp > CMakeFiles/spline_fit.dir/src/main_time.cpp.i
 
-CMakeFiles/spline_fit.dir/src/main_fit.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/spline_fit.dir/src/main_fit.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/hp/ITSP2k16-HawkEyes/interpolation/src/main_fit.cpp -o CMakeFiles/spline_fit.dir/src/main_fit.cpp.s
+CMakeFiles/spline_fit.dir/src/main_time.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/spline_fit.dir/src/main_time.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/hp/ITSP2k16-HawkEyes/interpolation/src/main_time.cpp -o CMakeFiles/spline_fit.dir/src/main_time.cpp.s
 
-CMakeFiles/spline_fit.dir/src/main_fit.cpp.o.requires:
-.PHONY : CMakeFiles/spline_fit.dir/src/main_fit.cpp.o.requires
+CMakeFiles/spline_fit.dir/src/main_time.cpp.o.requires:
+.PHONY : CMakeFiles/spline_fit.dir/src/main_time.cpp.o.requires
 
-CMakeFiles/spline_fit.dir/src/main_fit.cpp.o.provides: CMakeFiles/spline_fit.dir/src/main_fit.cpp.o.requires
-	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/main_fit.cpp.o.provides.build
-.PHONY : CMakeFiles/spline_fit.dir/src/main_fit.cpp.o.provides
+CMakeFiles/spline_fit.dir/src/main_time.cpp.o.provides: CMakeFiles/spline_fit.dir/src/main_time.cpp.o.requires
+	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/main_time.cpp.o.provides.build
+.PHONY : CMakeFiles/spline_fit.dir/src/main_time.cpp.o.provides
 
-CMakeFiles/spline_fit.dir/src/main_fit.cpp.o.provides.build: CMakeFiles/spline_fit.dir/src/main_fit.cpp.o
+CMakeFiles/spline_fit.dir/src/main_time.cpp.o.provides.build: CMakeFiles/spline_fit.dir/src/main_time.cpp.o
 
 # Object files for target spline_fit
 spline_fit_OBJECTS = \
 "CMakeFiles/spline_fit.dir/src/spline_fit.cpp.o" \
-"CMakeFiles/spline_fit.dir/src/main_fit.cpp.o"
+"CMakeFiles/spline_fit.dir/src/main_time.cpp.o"
 
 # External object files for target spline_fit
 spline_fit_EXTERNAL_OBJECTS =
 
 spline_fit: CMakeFiles/spline_fit.dir/src/spline_fit.cpp.o
-spline_fit: CMakeFiles/spline_fit.dir/src/main_fit.cpp.o
+spline_fit: CMakeFiles/spline_fit.dir/src/main_time.cpp.o
 spline_fit: CMakeFiles/spline_fit.dir/build.make
 spline_fit: /usr/lib/x86_64-linux-gnu/libopencv_videostab.so.2.4.8
 spline_fit: /usr/lib/x86_64-linux-gnu/libopencv_video.so.2.4.8
@@ -144,7 +144,7 @@ CMakeFiles/spline_fit.dir/build: spline_fit
 .PHONY : CMakeFiles/spline_fit.dir/build
 
 CMakeFiles/spline_fit.dir/requires: CMakeFiles/spline_fit.dir/src/spline_fit.cpp.o.requires
-CMakeFiles/spline_fit.dir/requires: CMakeFiles/spline_fit.dir/src/main_fit.cpp.o.requires
+CMakeFiles/spline_fit.dir/requires: CMakeFiles/spline_fit.dir/src/main_time.cpp.o.requires
 .PHONY : CMakeFiles/spline_fit.dir/requires
 
 CMakeFiles/spline_fit.dir/clean:
