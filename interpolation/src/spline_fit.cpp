@@ -39,6 +39,11 @@ std::vector<double> SplineFit::interpolate()
     return _finalY;
 }
 
+std::vector<double> SplineFit::differentiate()
+{
+    return _derivY;
+}
+
 void SplineFit::linearFit()
 {
     double m = (_y[n-1]-_y[n-2])/(_x[n-1]-_x[n-2]);
@@ -46,6 +51,7 @@ void SplineFit::linearFit()
     {
         double y = _y[n-2] + m*(x-_x[n-2]);
         _finalY.emplace_back(y);
+        _derivY.emplace_back(m);
     }
 }
 
@@ -53,10 +59,12 @@ void SplineFit::quadraticFit()
 {
     fitYQuad();
     _finalY.resize(0);
+    _derivY.resize(0);
     for(double x=x_min;x<x_max;x+=DX)
     {
-        double y = fyQuad(x);
+        double y = fyQuad(x), yd = fyQuadDeriv(x);
         _finalY.emplace_back(y);
+        _derivY.emplace_back(yd);
     }
 }
 
@@ -64,10 +72,12 @@ void SplineFit::cubicFit()
 {
     fitYCubic();
     _finalY.resize(0);
+    _derivY.resize(0);
     for(double x=x_min;x<x_max;x+=DX)
     {
-        double y = fyCubic(x);
+        double y = fyCubic(x), yd = fyCubicDeriv(x);
         _finalY.emplace_back(y);
+        _derivY.emplace_back(yd);
     }
 }
 
@@ -127,12 +137,12 @@ void SplineFit::fitYCubic()
         b.resize(0);
         for(int i=0;i<n-1;i++)
             b.emplace_back(((_y[i+1]-_y[i])/h[i])-(h[i]*(2.0*c[i]+c[i+1]))/3.0);
-          //std::cout<<"7\n";
+        //std::cout<<"7\n";
 
         d.resize(0);
         for(int i=0;i<n-1;i++)
             d.emplace_back((c[i+1]-c[i])/(3.0*h[i]));
-         //std::cout<<"8\n";
+        //std::cout<<"8\n";
     }
 }
 
@@ -209,8 +219,31 @@ double SplineFit::fyQuad(double x)
             {
                 double xi = _x[i];
                 f = _y[i] + b[i]*(x-xi) + c[i]*(x-xi)*(x-xi);
-                //std::cout<<"c["<<i<<"]="<<c[i]<<'\n';
-                //print();
+                return f;
+            }
+        }
+    }
+}
+double SplineFit::fyQuadDeriv(double x)
+{
+    double f;
+    if(x>=_x[n-1] or x<_x[0])
+    {
+        int i;
+        if(x>=_x[n-1]) i = n-2;
+        else if(x<_x[0]) i = 0;
+        double xi = _x[i];
+        f = b[i] + 2*c[i]*(x-xi);
+        return f;
+    }
+    else
+    {
+        for(int i=0;i<n-1;i++)
+        {
+            if(x>=_x[i] && x<_x[i+1])
+            {
+                double xi = _x[i];
+                f = b[i] + 2*c[i]*(x-xi);
                 return f;
             }
         }
@@ -232,34 +265,59 @@ double SplineFit::fyCubic(double x)
     }
     else
     {
-    for(int i=0;i<n-1;i++)
-    {
-        if(x>=_x[i] && x<_x[i+1])
+        for(int i=0;i<n-1;i++)
         {
-            double xi = _x[i];
-            f = _y[i]+b[i]*(x-xi)+c[i]*(x-xi)*(x-xi)+d[i]*(x-xi)*(x-xi)*(x-xi);
-            return f;
+            if(x>=_x[i] && x<_x[i+1])
+            {
+                double xi = _x[i];
+                f = _y[i]+b[i]*(x-xi)+c[i]*(x-xi)*(x-xi)+d[i]*(x-xi)*(x-xi)*(x-xi);
+                return f;
+            }
         }
     }
+}
+double SplineFit::fyCubicDeriv(double x)
+{
+    double f;
+
+    if(x>=_x[n-1] or x<_x[0])
+    {
+        int i;
+        if(x>=_x[n-1]) i = n-2;
+        else if(x<_x[0]) i = 0;
+        double xi = _x[i];
+        f = b[i] + 2*c[i]*(x-xi) + 3*d[i]*(x-xi)*(x-xi);
+        return f;
+    }
+    else
+    {
+        for(int i=0;i<n-1;i++)
+        {
+            if(x>=_x[i] && x<_x[i+1])
+            {
+                double xi = _x[i];
+                f = b[i] + 2*c[i]*(x-xi) + 3*d[i]*(x-xi)*(x-xi);
+                return f;
+            }
+        }
     }
 }
-/*
-void SplineFit::extrapolateQuad()
+double SplineFit::getXFromY(double y, bool firstX)
 {
-    //ae + be*(x-_x[n]) + ce*(x-_x[n])*(x-_x[n])
-    //ae = _y[n]
-    //be = b[n-1] + 2*c[n-1]*h[n-1]
-    //ce = ?????
+    for(double x=x_min;x<x_max-DX/10.0;x+=DX/10.0)
+    {
+        if(firstX)
+        {
+            if(fyCubic(x)<=y and fyCubic(x+DX/10.0)>y)
+                return x;
+        }
+        else
+        {
+            if(fyCubic(x)>=y and fyCubic(x+DX/10.0)<y)
+                return x;
+        }
+    }
 }
-
-void SplineFit::extrapolateCubic()
-{
-    //ae + be*(x-_x[n]) + ce*(x-_x[n])*(x-_x[n]) + de*(x-_x[n])*(x-_x[n])*(x-_x[n])
-    //ae = _y[n]
-    //be = b[n-1] + 2*c[n-1]*h[n-1] +3*d[n-1]*h[n-1]*h[n-1]
-    //ce = 2*c[n-1] + 6*d[n-1]*h[n-1]
-    //de = ?????
-}*/
 void SplineFit::print()
 {
     for(int i=0;i<c.size();i++)
