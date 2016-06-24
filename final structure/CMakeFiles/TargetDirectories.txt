@@ -1,0 +1,2 @@
+/home/shriram/hawkeye c++/final structure/CMakeFiles/calibration.dir
+/home/shriram/hawkeye c++/final structure/CMakeFiles/detection.dir
