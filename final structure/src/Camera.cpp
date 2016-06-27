@@ -27,7 +27,7 @@ void Camera::learnBg(){
 	cin >> end;
 	start *= 1000;											// *1000 to convert to milliseconds
 	end *= 1000;
-	cap.set(CAP_PROP_POS_MSEC,start);				
+	cap.set(CAP_PROP_POS_MSEC,start);		
 	while(end - cap.get(CAP_PROP_POS_MSEC) > 1000){
 		cap.read(temp1);
 		remap(temp1, temp, mapx, mapy, INTER_LINEAR);
@@ -36,6 +36,7 @@ void Camera::learnBg(){
 		temp.release();
 		temp1.release();
 	}
+	cout << endl << "Successfully completed" << endl;
 	//cap.set(CAP_PROP_POS_FRAMES,0);							//set the pointer back to start to sync later
 }
 

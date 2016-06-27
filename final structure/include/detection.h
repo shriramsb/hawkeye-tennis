@@ -79,3 +79,11 @@ void eliminate_duplication(vector<Point2f>& c);								//to eliminate two closel
 void getFundMat(char f[]);
 void epipolar_constraint(vector<Point2f>& cam1pts, vector<Point2f>& cam2pts);
 float dist(Point2f pt, Point3f line);
+
+bool ask_fund_mat();
+
+void createWindow();
+
+void video_controls(CamFrame camera[]);
+
+void init_camera(CamFrame camera[], char** argv);

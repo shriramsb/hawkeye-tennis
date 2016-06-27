@@ -1,11 +1,15 @@
 #include <detection.h>
 #include "point_details.h"
 Mat fund_mat;
+#define SCREEN_WIDTH 1366
+#define SCREEN_HEIGHT 768
 
 
 void syncVideo(CamFrame camera[]){				//manual synchronization of video 
 	namedWindow("camera1", WINDOW_NORMAL);
 	namedWindow("camera2", WINDOW_NORMAL);
+	resizeWindow("camera1", SCREEN_WIDTH/2, SCREEN_HEIGHT);
+	resizeWindow("camera2", SCREEN_WIDTH/2, SCREEN_HEIGHT);
 	for (int i = 0; i < 2; i++){
 		camera[i].getframe();
 		char temp[20];
@@ -35,8 +39,8 @@ void syncVideo(CamFrame camera[]){				//manual synchronization of video
 			cout << camera[0].cam.cap.get(CAP_PROP_POS_FRAMES) << endl << camera[1].cam.cap.get(CAP_PROP_POS_FRAMES);
 		}
 		else if (c == 'r'){
-			camera[0].cam.cap.set(CAP_PROP_POS_FRAMES, 1935);
-			camera[1].cam.cap.set(CAP_PROP_POS_FRAMES, 1921);
+			camera[0].cam.cap.set(CAP_PROP_POS_FRAMES, 3334);
+			camera[1].cam.cap.set(CAP_PROP_POS_FRAMES, 3268);
 		}
 		c = waitKey(0);
 	}
@@ -72,6 +76,14 @@ void get3dloc(CamFrame camera[], fstream& output, bool epipolar){
 	if (epipolar && camera[0].constraint_center.size() >= 1 && camera[1].constraint_center.size() >= 1){
 		epipolar_constraint(camera[0].constraint_center, camera[1].constraint_center);
 	}
+	vector<Point3f> cam_lines1;
+	if (camera[0].constraint_center.size() >= 1){				//drawing epilines
+		computeCorrespondEpilines(camera[0].constraint_center, 1, fund_mat, cam_lines1);
+		Point2f end_pts[2] = {Point2f(-cam_lines1[0].z/cam_lines1[0].x,0), Point2f(0, -cam_lines1[0].z/cam_lines1[0].y)};
+		line(camera[1].contour_plot, end_pts[0], end_pts[1] , Scalar(0,0,255));
+		cout << "End_pts" << end_pts[0] << " " << end_pts[1] << endl;
+		cout << "a = " << cam_lines1[0].x << "b = " << cam_lines1[0].y << "c = " << cam_lines1[0].z << endl;
+	}
 	bool can_find3d = true;
 	Mat pt3d = Mat::zeros(3,1,CV_64F);
 	for (int i = 0; i < 2; i++){
@@ -81,23 +93,34 @@ void get3dloc(CamFrame camera[], fstream& output, bool epipolar){
 			can_find3d = false;
 	}
 	if (can_find3d){
+		/*vector<Point2f> t1, t2;
+		correctMatches(fund_mat, camera[0].constraint_center, camera[1].constraint_center, t1, t2);
+		camera[0].center = t1[0];
+		camera[1].center = t2[0];*/
 		for (int i = 0; i < 2; i++){
 			circle(camera[i].contour_plot, camera[i].center, 2, Scalar(255,0,0));
 			show(camera[i], i + 1);
 		}
 		pos3d_solve(camera[0].cam.proj_mat, camera[1].cam.proj_mat, camera[0].center, camera[1].center, pt3d);	
-		cout << camera[0].center << camera[1].center << pt3d << endl << endl;
+		cout << "Pixel coordinates in camera1: " << camera[0].center << endl;
+		cout << "Pixel coordinates in camera2: " << camera[1].center <<endl;
 		point_details temp(pt3d, camera);
+		cout << "3d coordinates of ball's center: " << temp.pt3d << endl << endl;
 		output.seekg(camera[0].frame_no * sizeof(temp));			//will take a lot of space but easy to read
 		output.write((char*)&temp, sizeof(temp));
 	}
 	else{
+		if ( camera[0].constraint_center.size() > 1 || camera[1].constraint_center.size() > 1)
+			cout << "Multiple contours" << endl << endl;
+		else 
+			cout << "Ball not found" << endl << endl;
 		point_details temp(pt3d, camera);
 		cout << pt3d;
 		output.seekg(camera[0].frame_no * sizeof(temp));
 		output.write((char*)&temp, sizeof(temp));
 	}
 	output.close();
+
 
 	
 	
@@ -195,10 +218,11 @@ void getFundMat(char f[]){
 }
 
 void epipolar_constraint(vector<Point2f>& cam1pts, vector<Point2f>& cam2pts){
-	float dist_threshold = 10;
+	float dist_threshold = 200;
 	vector<Point3f> cam_lines1;
 	vector<bool> to_remove[2];
 	computeCorrespondEpilines(cam1pts, 1, fund_mat, cam_lines1);
+
 	to_remove[0].resize(cam1pts.size(), true);
 	to_remove[1].resize(cam2pts.size(), true);
 	for (int i = 0; i < cam2pts.size(); i++)
@@ -222,5 +246,98 @@ void epipolar_constraint(vector<Point2f>& cam1pts, vector<Point2f>& cam2pts){
 float dist(Point2f pt, Point3f line){
 	float d;
 	d = abs(line.x * pt.x + line.y * pt.y + line.z);
+	cout << d;
 	return d;
+}
+
+bool ask_fund_mat(){
+	cout << "Want to apply epipolar constraint?(y/n)";
+	char ch;
+	cin >> ch;
+	bool epipolar = false;
+	if (ch == 'y'){
+		epipolar = true;
+		cout << "Source file for fundamental matrix?";
+		char f[80];
+		cin >> f;
+		getFundMat(f);
+	}
+	return epipolar;
+}
+
+void createWindow(){
+	namedWindow("camera1colMask", WINDOW_NORMAL);
+	namedWindow("camera2colMask", WINDOW_NORMAL);
+	namedWindow("camera1morph_colMask", WINDOW_NORMAL);
+	namedWindow("camera2morph_colMask", WINDOW_NORMAL);
+	namedWindow("camera1contour", WINDOW_NORMAL);
+	namedWindow("camera2contour", WINDOW_NORMAL);
+	resizeWindow("camera1colMask", SCREEN_WIDTH/2, SCREEN_HEIGHT);
+	resizeWindow("camera2colMask", SCREEN_WIDTH/2, SCREEN_HEIGHT);
+	resizeWindow("camera1morph_colMask", SCREEN_WIDTH/2, SCREEN_HEIGHT);
+	resizeWindow("camera2morph_colMask", SCREEN_WIDTH/2, SCREEN_HEIGHT);
+	resizeWindow("camera1contour", SCREEN_WIDTH/2, SCREEN_HEIGHT);
+	resizeWindow("camera2contour", SCREEN_WIDTH/2, SCREEN_HEIGHT);
+}
+
+void video_controls(CamFrame camera[]){
+	static char c = 'q';
+	static int wait = 1;
+	if (c !='p')
+		c = waitKey(wait);
+	if (c == 'p'){
+		c = waitKey(0);
+		if (c == 's'){
+			save_current(camera);
+			c = 'p';
+		}
+		/*else if (c == 'f'){
+			camera[0].findcenter();
+			camera[1].findcenter();
+			Mat pt3d;
+			pos3d_solve(camera[0].cam.proj_mat, camera[1].cam.proj_mat, camera[0].center, camera[1].center, pt3d);
+			cout << pt3d;
+			output << pt3d << endl;
+			c = '0';
+			cin >> c;
+		}*/
+		else if (c =='n'){
+			c = 'p';
+		}
+		else
+			c = '0';
+	}
+	else if (c == 's'){
+		syncVideo(camera);
+		c = '0';
+	}
+	/*else if (c == '4'){
+		wait++;
+		c = '0';
+	}
+	else if (c == '6'){
+		wait--;
+		wait = wait > 1 ? wait : 1;
+		c = '0';
+	}*/
+	else if (c == 'f'){
+		double t;
+		cin >> t;
+		double pos[2];
+		for (int i = 0; i < 2; i++){
+			pos[i] = camera[i].cam.cap.get(CAP_PROP_POS_FRAMES);
+			camera[i].cam.cap.set(CAP_PROP_POS_FRAMES, pos[i] + t);
+		}
+		c = '0';
+	}
+	else
+		c = '0';
+}
+
+void init_camera(CamFrame camera[], char** argv){
+	cout << endl << "Background learning" << endl;
+	cout << "Camera 1:" << endl;
+	camera[0] = CamFrame(argv[1], argv[3], Scalar(66/2, 59, 40), Scalar(118/2, 255, 255));		//dslr2 - Scalar(66/2, 59, 40), Scalar(118/2, 255, 255) //basktest1 - Scalar(51/2, 59, 40), Scalar(85/2, 255, 255) //dslr - Scalar(51/2, 59, 20), Scalar(118/2, 255, 255)
+	cout << "Camera 2:" << endl;
+	camera[1] = CamFrame(argv[2], argv[4], Scalar(51/2, 59, 40), Scalar(85/2, 255, 255));		//dslr2 - Scalar(51/2, 59, 40), Scalar(85/2, 255, 255)  //basktest1 - Scalar(51/2, 59, 58), Scalar(85/2, 255, 255) //dslr - Scalar(51/2, 59, 20), Scalar(118/2, 255, 255)
 }

@@ -8,7 +8,15 @@
 using namespace cv;
 using namespace std;
 
+void correctFormat();
+
 int main(int argc, char** argv){
+	correctFormat();
+	cout << "Check whether input is in above format.\nContinue(y/n)?";
+	char correct = 'n';
+	cin >> correct;
+	if (correct != 'y')
+		return 1;
 	fstream input(argv[1], ios::in);
 	float start, end;
 	cout << "Start position?";			//start and end inclusive
@@ -24,4 +32,8 @@ int main(int argc, char** argv){
 		}
 	}
 
+}
+
+void correctFormat(){
+	cout << "First argument: " << "file containing detected 3d coordinates" << endl;
 }
