@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/hp/ITSP2k16-HawkEyes/interpolation/src/main_time.cpp
+interpolation/spline_fit.h
+-
+interpolation/pose.h
+-
+fstream
+-
+
+include/interpolation/pose.h
+
+include/interpolation/spline_fit.h
+eigen3/Eigen/Dense
+-
+vector
+-
+fstream
+-
+iostream
+-
+
