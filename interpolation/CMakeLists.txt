@@ -9,3 +9,10 @@ set( SPLINE_FIT_SRCS
     src/main_time.cpp )
 add_executable( spline_fit ${SPLINE_FIT_SRCS} )
 target_link_libraries( spline_fit ${OpenCV_LIBS})
+
+set( SPLINE_FIT_REAL_SRCS
+    src/spline_fit.cpp
+    src/point_details.cpp
+    src/main_real.cpp )
+add_executable( spline_fit_real ${SPLINE_FIT_REAL_SRCS} )
+target_link_libraries( spline_fit_real ${OpenCV_LIBS})

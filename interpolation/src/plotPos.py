@@ -5,6 +5,9 @@ def plotFn(fileName):
     y = []
     z = []
     t = []
+    vx = []
+    vy = []
+    vz = []
     f = open(fileName,'r')
     data = f.readlines()
     for line in data:
@@ -12,6 +15,9 @@ def plotFn(fileName):
         x.append(lineData[0])
         y.append(lineData[1])
         z.append(lineData[2])
+        vx.append(lineData[3])
+        vy.append(lineData[4])
+        vz.append(lineData[5])
         t.append(lineData[6])
     plt.plot(t,x,'bo')
     plt.plot(t,y,'ro')

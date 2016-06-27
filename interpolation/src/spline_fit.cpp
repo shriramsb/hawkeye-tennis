@@ -88,8 +88,8 @@ void SplineFit::fitYCubic()
         A.resize(2,2);
         B.resize(0);
         A(0,0)=1;A(1,0)=0;A(1,1)=1;A(0,1)=0;
-        B.emplace_back(0);
-        B.emplace_back(0);
+        B.emplace_back(-4.9/10000.0);
+        B.emplace_back(-4.9/10000.0);
         b.emplace_back((_y[1]-_y[0])/h[0]);
         c.emplace_back(0);
         c.emplace_back(0);
@@ -116,7 +116,7 @@ void SplineFit::fitYCubic()
 
         //B->n-1
         B[n-2] = (3.0/h[n-2])*(_y[n-1]-_y[n-2]) -(3.0/h[n-3])*(_y[n-2]-_y[n-3]);
-        B.emplace_back(0);
+        B.emplace_back(-4.9/10000.0);
         // std::cout<<"4\n";
         //B->n
 
@@ -302,19 +302,49 @@ double SplineFit::fyCubicDeriv(double x)
         }
     }
 }
+double SplineFit::fy(double x)
+{
+    if(degree == 2)
+        return fyQuad(x);
+    else if(degree == 3)
+        return fyCubic(x);
+}
+double SplineFit::fyDeriv(double x)
+{
+    if(degree == 2)
+        return fyQuadDeriv(x);
+    else if(degree == 3)
+        return fyCubicDeriv(x);
+}
 double SplineFit::getXFromY(double y, bool firstX)
 {
     for(double x=x_min;x<x_max-DX/10.0;x+=DX/10.0)
     {
-        if(firstX)
+        if(degree == 3)
         {
-            if(fyCubic(x)<=y and fyCubic(x+DX/10.0)>y)
-                return x;
+            if(firstX)
+            {
+                if(fyCubic(x)<=y and fyCubic(x+DX/10.0)>y)
+                    return x;
+            }
+            else
+            {
+                if(fyCubic(x)>=y and fyCubic(x+DX/10.0)<y)
+                    return x;
+            }
         }
-        else
+        else if(degree == 2)
         {
-            if(fyCubic(x)>=y and fyCubic(x+DX/10.0)<y)
-                return x;
+            if(firstX)
+            {
+                if(fyQuad(x)<=y and fyQuad(x+DX/10.0)>y)
+                    return x;
+            }
+            else
+            {
+                if(fyQuad(x)>=y and fyQuad(x+DX/10.0)<y)
+                    return x;
+            }
         }
     }
 }

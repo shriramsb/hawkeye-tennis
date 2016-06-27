@@ -111,6 +111,43 @@ spline_fit/fast:
 	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/build
 .PHONY : spline_fit/fast
 
+#=============================================================================
+# Target rules for targets named spline_fit_real
+
+# Build rule for target.
+spline_fit_real: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 spline_fit_real
+.PHONY : spline_fit_real
+
+# fast build rule for target.
+spline_fit_real/fast:
+	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/build
+.PHONY : spline_fit_real/fast
+
+src/main_real.o: src/main_real.cpp.o
+.PHONY : src/main_real.o
+
+# target to build an object file
+src/main_real.cpp.o:
+	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/src/main_real.cpp.o
+.PHONY : src/main_real.cpp.o
+
+src/main_real.i: src/main_real.cpp.i
+.PHONY : src/main_real.i
+
+# target to preprocess a source file
+src/main_real.cpp.i:
+	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/src/main_real.cpp.i
+.PHONY : src/main_real.cpp.i
+
+src/main_real.s: src/main_real.cpp.s
+.PHONY : src/main_real.s
+
+# target to generate assembly for a file
+src/main_real.cpp.s:
+	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/src/main_real.cpp.s
+.PHONY : src/main_real.cpp.s
+
 src/main_time.o: src/main_time.cpp.o
 .PHONY : src/main_time.o
 
@@ -135,12 +172,37 @@ src/main_time.cpp.s:
 	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/main_time.cpp.s
 .PHONY : src/main_time.cpp.s
 
+src/point_details.o: src/point_details.cpp.o
+.PHONY : src/point_details.o
+
+# target to build an object file
+src/point_details.cpp.o:
+	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/src/point_details.cpp.o
+.PHONY : src/point_details.cpp.o
+
+src/point_details.i: src/point_details.cpp.i
+.PHONY : src/point_details.i
+
+# target to preprocess a source file
+src/point_details.cpp.i:
+	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/src/point_details.cpp.i
+.PHONY : src/point_details.cpp.i
+
+src/point_details.s: src/point_details.cpp.s
+.PHONY : src/point_details.s
+
+# target to generate assembly for a file
+src/point_details.cpp.s:
+	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/src/point_details.cpp.s
+.PHONY : src/point_details.cpp.s
+
 src/spline_fit.o: src/spline_fit.cpp.o
 .PHONY : src/spline_fit.o
 
 # target to build an object file
 src/spline_fit.cpp.o:
 	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/spline_fit.cpp.o
+	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/src/spline_fit.cpp.o
 .PHONY : src/spline_fit.cpp.o
 
 src/spline_fit.i: src/spline_fit.cpp.i
@@ -149,6 +211,7 @@ src/spline_fit.i: src/spline_fit.cpp.i
 # target to preprocess a source file
 src/spline_fit.cpp.i:
 	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/spline_fit.cpp.i
+	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/src/spline_fit.cpp.i
 .PHONY : src/spline_fit.cpp.i
 
 src/spline_fit.s: src/spline_fit.cpp.s
@@ -157,6 +220,7 @@ src/spline_fit.s: src/spline_fit.cpp.s
 # target to generate assembly for a file
 src/spline_fit.cpp.s:
 	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/spline_fit.cpp.s
+	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/src/spline_fit.cpp.s
 .PHONY : src/spline_fit.cpp.s
 
 # Help Target
@@ -168,9 +232,16 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... spline_fit"
+	@echo "... spline_fit_real"
+	@echo "... src/main_real.o"
+	@echo "... src/main_real.i"
+	@echo "... src/main_real.s"
 	@echo "... src/main_time.o"
 	@echo "... src/main_time.i"
 	@echo "... src/main_time.s"
+	@echo "... src/point_details.o"
+	@echo "... src/point_details.i"
+	@echo "... src/point_details.s"
 	@echo "... src/spline_fit.o"
 	@echo "... src/spline_fit.i"
 	@echo "... src/spline_fit.s"

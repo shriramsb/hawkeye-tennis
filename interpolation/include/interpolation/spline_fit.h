@@ -23,16 +23,18 @@ class SplineFit
     void cubicFit();
     void fitYQuad();
     void fitYCubic();
+    double fyQuad(double x);
+    double fyCubic(double x);
+    double fyQuadDeriv(double x);
+    double fyCubicDeriv(double x);
     public:
     SplineFit(int deg=2, int nBefore=10, int nAfter=10);
     std::vector<double> interpolate();
     std::vector<double> differentiate();
     void getXAndY(double x, double y);
     double getXFromY(double y, bool firstX=true);
-    double fyQuad(double x);
-    double fyCubic(double x);
-    double fyQuadDeriv(double x);
-    double fyCubicDeriv(double x);
+    double fy(double x);
+    double fyDeriv(double x);
     void print();
     double x_min, x_max;
 };

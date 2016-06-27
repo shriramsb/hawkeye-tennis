@@ -12,7 +12,7 @@ def plotFn(fileName):
         x.append(lineData[0])
         y.append(lineData[1])
         z.append(lineData[2])
-        t.append(lineData[6])
+        t.append(lineData[3])
     plt.plot(t,x,'bo')
     plt.plot(t,y,'ro')
     plt.plot(t,z,'go')
@@ -22,4 +22,4 @@ def plotFn(fileName):
     plt.show()
 
 if __name__=="__main__":
-    plotFn("../time.txt")
+    plotFn("../pts.txt")
