@@ -47,7 +47,15 @@ void mouse_click(int event, int x , int y , int, void*){
 	}
 	draw_show();
 }
+
+void correctFormat();
 int main(int argc, char** argv){
+	correctFormat();
+	cout << "Check whether input is in above format.\nContinue(y/n)?";
+	char correct = 'n';
+	cin >> correct;
+	if (correct != 'y')
+		return 1;
 	for (int i = 0; i < 2; i++){
 		cout << "Enter frame_no";
 		cin >> p.frame_no[i];
@@ -118,3 +126,11 @@ int main(int argc, char** argv){
 	f.write((char*)&p ,sizeof(p));
 	f.close();
 } 
+
+void correctFormat(){
+	cout << "First argument: " << "Video from camera1" << endl;
+	cout << "Second argument: " << "Video from camera2" << endl;
+	cout << "Third argument: " << "calibration data file for camera1" << endl;
+	cout << "Fourth argument: " << "calibration data file for camera2" << endl;
+	cout << "Fifth argument: " << "output file containing calculated 3d location" << endl;
+}

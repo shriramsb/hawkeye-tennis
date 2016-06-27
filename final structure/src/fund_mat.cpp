@@ -17,7 +17,15 @@ const int n_cols = 7;
 const int n_rows = 8;
 const Size board_size = Size(n_cols, n_rows);
 
+void correctFormat();
+
 int main(int argc, char** argv){
+	correctFormat();
+	cout << "Check whether input is in above format.\nContinue(y/n)?";
+	char correct = 'n';
+	cin >> correct;
+	if (correct != 'y')
+		return 1;
 	Mat img[2], img_gray[2];
 	vector<Point2f> img_pts[2];
 	for (int i = 0; i < 2; i++){
@@ -35,4 +43,10 @@ int main(int argc, char** argv){
 	f.release();
 
 
+}
+
+void correctFormat(){
+	cout << "First argument: " << "Undistorted chessboard image from 1st camera" << endl;
+	cout << "Second argument: " << "Undistorted chessboard image from 2nd camera" << endl;
+	cout << "Third argument: " << "Destination file containing fundamental matrix" << endl;
 }

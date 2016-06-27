@@ -11,6 +11,7 @@
 */
 
 #include <calibration.h>
+void correctFormat();
 using namespace cv;
 using namespace std;
 const int n_cols = 7;
@@ -38,14 +39,21 @@ void initObj_pts(vector<vector<Point3f> > &obj_pts){
 }
 int main(int argc, char** argv){
 	if (argc != 4){
-		cout << "Wrong number of arguments";
+		cout << "Wrong number of arguments" << endl;
+		correctFormat();
 		return 1;
 	}
 	else{
+		correctFormat();
+		cout << "Check whether input is in above format.\nContinue?(y/n)?";
+		char correct = 'n';
+		cin >> correct;
+		if (correct != 'y')
+			return 1;
 		cout << "Enter number of images";
 		cin >> n_boards;
 		int flag = 0;
-		flag |= CALIB_FIX_K3;//CALIB_ZERO_TANGENT_DIST; |CALIB_FIX_K2 | CALIB_FIX_K1;
+		flag |= CALIB_FIX_K3 ;// CALIB_ZERO_TANGENT_DIST |CALIB_FIX_K2 | CALIB_FIX_K1;
 
 		char filename[50];
 		vector<vector<Point3f> > obj_pts(1);
@@ -56,7 +64,6 @@ int main(int argc, char** argv){
 			sprintf(filename, "%s/%d.%s", argv[1], i, argv[2]);
 			img = imread(filename, IMREAD_COLOR);
 			found = findChessboardCorners(img, board_size, pointBuf);
-			cout << found;
 			if (!found)
 				continue;
 			cvtColor(img, img_gray, COLOR_BGR2GRAY);
@@ -101,4 +108,12 @@ int main(int argc, char** argv){
 		}
 		return 0;
 	}
+}
+
+void correctFormat(){
+	cout << "First argument: folder containing calibration images" << endl;
+	cout << "Second argument: format of images" << endl;
+	cout << "Third argument: destination of calibration data" << endl;
+	cout << "Example: ./calibration bouncetest/camera1 jpg bouncetest/camera1/calib1.xml" << endl;
+	cout << "Make sure that images are named numberically starting from 1 (Ex. 1.jpg, 2.jpg ...)" << endl; 
 }
