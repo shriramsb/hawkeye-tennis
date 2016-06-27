@@ -35,5 +35,5 @@ void correctFormat(){
 	cout << "Second argument: " << "calibration data file for 2nd camera" << endl;
 	cout << "Third argument: " << "Video from 1st camera" << endl;
 	cout << "Fourth argument: " << "Video from 2nd camera" << endl;
-	cout << "Fifth argument" << "Destination of output file containing calculated 3d coordinates" << endl;
+	cout << "Fifth argument: " << "Destination of output file containing calculated 3d coordinates" << endl;
 }

@@ -87,3 +87,5 @@ void createWindow();
 void video_controls(CamFrame camera[]);
 
 void init_camera(CamFrame camera[], char** argv);
+
+void videoControls_help();
