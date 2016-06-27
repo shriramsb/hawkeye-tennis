@@ -1,7 +1,6 @@
 #include <interpolation/spline_fit.h>
 #include <interpolation/pose.h>
 #include <fstream>
-const double BALL_RAD = 3.5;
 
 void getImpactArea()
 {
@@ -60,6 +59,7 @@ int main(int argc, char** argv)
     }
     double t_min=spFit1[x].x_min;
     double t_max=spFit1[x].x_max;
+    double DX = spFit1[x].DX;
     int i=0;
     for(double t=t_min;t<t_max;t+=DX,i++)
     {

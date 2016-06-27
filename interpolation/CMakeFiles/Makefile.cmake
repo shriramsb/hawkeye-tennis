@@ -43,6 +43,7 @@ SET(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 SET(CMAKE_DEPEND_INFO_FILES
+  "CMakeFiles/bounce_area.dir/DependInfo.cmake"
   "CMakeFiles/spline_fit.dir/DependInfo.cmake"
   "CMakeFiles/spline_fit_real.dir/DependInfo.cmake"
   )

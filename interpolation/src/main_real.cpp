@@ -2,7 +2,6 @@
 #include <interpolation/pose.h>
 #include <interpolation/point_details.h>
 #include <fstream>
-const double BALL_RAD = 4.5;
 using namespace cv;
 
 int main(int argc, char** argv)
@@ -67,6 +66,7 @@ int main(int argc, char** argv)
     }
     double t_min=spFit1[x].x_min;
     double t_max=spFit1[x].x_max;
+    double DX = spFit1[x].DX;
     int i=0;
     for(double t=t_min;t<t_max;t+=DX,i++)
     {
@@ -82,6 +82,7 @@ int main(int argc, char** argv)
     }
     t_min=spFit2[x].x_min;
     t_max=spFit2[x].x_max;
+    DX = spFit2[x].DX;
     i=0;
     std::cout<<"MMMMMMMMMMM";
     for(double t=t_min;t<t_max;t+=DX,i++)

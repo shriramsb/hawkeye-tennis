@@ -99,6 +99,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named bounce_area
+
+# Build rule for target.
+bounce_area: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bounce_area
+.PHONY : bounce_area
+
+# fast build rule for target.
+bounce_area/fast:
+	$(MAKE) -f CMakeFiles/bounce_area.dir/build.make CMakeFiles/bounce_area.dir/build
+.PHONY : bounce_area/fast
+
+#=============================================================================
 # Target rules for targets named spline_fit
 
 # Build rule for target.
@@ -123,6 +136,30 @@ spline_fit_real: cmake_check_build_system
 spline_fit_real/fast:
 	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/build
 .PHONY : spline_fit_real/fast
+
+src/main_bounce.o: src/main_bounce.cpp.o
+.PHONY : src/main_bounce.o
+
+# target to build an object file
+src/main_bounce.cpp.o:
+	$(MAKE) -f CMakeFiles/bounce_area.dir/build.make CMakeFiles/bounce_area.dir/src/main_bounce.cpp.o
+.PHONY : src/main_bounce.cpp.o
+
+src/main_bounce.i: src/main_bounce.cpp.i
+.PHONY : src/main_bounce.i
+
+# target to preprocess a source file
+src/main_bounce.cpp.i:
+	$(MAKE) -f CMakeFiles/bounce_area.dir/build.make CMakeFiles/bounce_area.dir/src/main_bounce.cpp.i
+.PHONY : src/main_bounce.cpp.i
+
+src/main_bounce.s: src/main_bounce.cpp.s
+.PHONY : src/main_bounce.s
+
+# target to generate assembly for a file
+src/main_bounce.cpp.s:
+	$(MAKE) -f CMakeFiles/bounce_area.dir/build.make CMakeFiles/bounce_area.dir/src/main_bounce.cpp.s
+.PHONY : src/main_bounce.cpp.s
 
 src/main_real.o: src/main_real.cpp.o
 .PHONY : src/main_real.o
@@ -201,6 +238,7 @@ src/spline_fit.o: src/spline_fit.cpp.o
 
 # target to build an object file
 src/spline_fit.cpp.o:
+	$(MAKE) -f CMakeFiles/bounce_area.dir/build.make CMakeFiles/bounce_area.dir/src/spline_fit.cpp.o
 	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/spline_fit.cpp.o
 	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/src/spline_fit.cpp.o
 .PHONY : src/spline_fit.cpp.o
@@ -210,6 +248,7 @@ src/spline_fit.i: src/spline_fit.cpp.i
 
 # target to preprocess a source file
 src/spline_fit.cpp.i:
+	$(MAKE) -f CMakeFiles/bounce_area.dir/build.make CMakeFiles/bounce_area.dir/src/spline_fit.cpp.i
 	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/spline_fit.cpp.i
 	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/src/spline_fit.cpp.i
 .PHONY : src/spline_fit.cpp.i
@@ -219,6 +258,7 @@ src/spline_fit.s: src/spline_fit.cpp.s
 
 # target to generate assembly for a file
 src/spline_fit.cpp.s:
+	$(MAKE) -f CMakeFiles/bounce_area.dir/build.make CMakeFiles/bounce_area.dir/src/spline_fit.cpp.s
 	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/src/spline_fit.cpp.s
 	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/src/spline_fit.cpp.s
 .PHONY : src/spline_fit.cpp.s
@@ -229,10 +269,14 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... bounce_area"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... spline_fit"
 	@echo "... spline_fit_real"
+	@echo "... src/main_bounce.o"
+	@echo "... src/main_bounce.i"
+	@echo "... src/main_bounce.s"
 	@echo "... src/main_real.o"
 	@echo "... src/main_real.i"
 	@echo "... src/main_real.s"

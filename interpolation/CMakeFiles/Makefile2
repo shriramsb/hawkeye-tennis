@@ -53,13 +53,48 @@ CMAKE_SOURCE_DIR = /home/hp/ITSP2k16-HawkEyes/interpolation
 CMAKE_BINARY_DIR = /home/hp/ITSP2k16-HawkEyes/interpolation
 
 #=============================================================================
+# Target rules for target CMakeFiles/bounce_area.dir
+
+# All Build rule for target.
+CMakeFiles/bounce_area.dir/all:
+	$(MAKE) -f CMakeFiles/bounce_area.dir/build.make CMakeFiles/bounce_area.dir/depend
+	$(MAKE) -f CMakeFiles/bounce_area.dir/build.make CMakeFiles/bounce_area.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/hp/ITSP2k16-HawkEyes/interpolation/CMakeFiles  1 2
+	@echo "Built target bounce_area"
+.PHONY : CMakeFiles/bounce_area.dir/all
+
+# Include target in all.
+all: CMakeFiles/bounce_area.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/bounce_area.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hp/ITSP2k16-HawkEyes/interpolation/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/bounce_area.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hp/ITSP2k16-HawkEyes/interpolation/CMakeFiles 0
+.PHONY : CMakeFiles/bounce_area.dir/rule
+
+# Convenience name for target.
+bounce_area: CMakeFiles/bounce_area.dir/rule
+.PHONY : bounce_area
+
+# clean rule for target.
+CMakeFiles/bounce_area.dir/clean:
+	$(MAKE) -f CMakeFiles/bounce_area.dir/build.make CMakeFiles/bounce_area.dir/clean
+.PHONY : CMakeFiles/bounce_area.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/bounce_area.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/spline_fit.dir
 
 # All Build rule for target.
 CMakeFiles/spline_fit.dir/all:
 	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/depend
 	$(MAKE) -f CMakeFiles/spline_fit.dir/build.make CMakeFiles/spline_fit.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/hp/ITSP2k16-HawkEyes/interpolation/CMakeFiles  1 2
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/hp/ITSP2k16-HawkEyes/interpolation/CMakeFiles  3 4
 	@echo "Built target spline_fit"
 .PHONY : CMakeFiles/spline_fit.dir/all
 
@@ -94,7 +129,7 @@ clean: CMakeFiles/spline_fit.dir/clean
 CMakeFiles/spline_fit_real.dir/all:
 	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/depend
 	$(MAKE) -f CMakeFiles/spline_fit_real.dir/build.make CMakeFiles/spline_fit_real.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/hp/ITSP2k16-HawkEyes/interpolation/CMakeFiles  3 4 5
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/hp/ITSP2k16-HawkEyes/interpolation/CMakeFiles  5 6 7
 	@echo "Built target spline_fit_real"
 .PHONY : CMakeFiles/spline_fit_real.dir/all
 
