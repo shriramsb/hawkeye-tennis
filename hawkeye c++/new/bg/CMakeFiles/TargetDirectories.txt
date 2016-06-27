@@ -1,1 +1,0 @@
-/home/shriram/hawkeye c++/new/bg/CMakeFiles/bg.dir

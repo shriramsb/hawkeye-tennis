@@ -1,1 +1,0 @@
-/home/hp/ITSP2k16-HawkEyes/BallwithLapCam/CMakeFiles/BallWithLapCam.dir

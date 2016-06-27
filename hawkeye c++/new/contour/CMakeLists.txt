@@ -1,6 +1,0 @@
-cmake_minimum_required(VERSION 2.8)
-project(contour)
-set(OpenCV_DIR '/home/shriram/opencv-3.1.0/build')
-find_package(OpenCV 3.1 REQUIRED)
-add_executable( contour contour.cpp)
-target_link_libraries( contour ${OpenCV_LIBS})

@@ -1,6 +1,0 @@
-cmake_minimum_required(VERSION 2.8)
-project(background)
-set(OpenCV_DIR '/home/shriram/opencv-3.1.0/build')
-find_package(OpenCV 3.1 REQUIRED)
-add_executable( background background.cpp)
-target_link_libraries( background ${OpenCV_LIBS})

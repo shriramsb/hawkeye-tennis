@@ -1,1 +1,0 @@
-/usr/bin/c++       CMakeFiles/BallWithLapCam.dir/BallWithLapCam.cpp.o  -o BallWithLapCam -rdynamic 
