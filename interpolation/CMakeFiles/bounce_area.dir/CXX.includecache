@@ -7,22 +7,12 @@
 #IncludeRegexTransform: 
 
 /home/hp/ITSP2k16-HawkEyes/interpolation/src/main_bounce.cpp
-interpolation/spline_fit.h
--
 iostream
 -
 fstream
--
-math.h
--
-
-include/interpolation/spline_fit.h
-eigen3/Eigen/Dense
 -
 vector
 -
-fstream
--
-iostream
+math.h
 -
 

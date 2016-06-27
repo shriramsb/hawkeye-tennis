@@ -3,7 +3,6 @@
 
 CMakeFiles/bounce_area.dir/src/main_bounce.cpp.o
  /home/hp/ITSP2k16-HawkEyes/interpolation/src/main_bounce.cpp
- include/interpolation/spline_fit.h
 CMakeFiles/bounce_area.dir/src/spline_fit.cpp.o
  /home/hp/ITSP2k16-HawkEyes/interpolation/src/spline_fit.cpp
  include/interpolation/spline_fit.h
