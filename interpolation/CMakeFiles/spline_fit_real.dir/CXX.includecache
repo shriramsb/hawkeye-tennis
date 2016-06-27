@@ -6,13 +6,41 @@
 
 #IncludeRegexTransform: 
 
-/home/hp/ITSP2k16-HawkEyes/interpolation/src/spline_fit.cpp
+/home/hp/ITSP2k16-HawkEyes/interpolation/src/main_real.cpp
 interpolation/spline_fit.h
 -
-iostream
+interpolation/pose.h
+-
+interpolation/point_details.h
 -
 fstream
 -
+
+include/interpolation/point_details.h
+opencv2/imgproc/imgproc.hpp
+-
+opencv2/highgui/highgui.hpp
+-
+opencv2/video/video.hpp
+-
+opencv2/core/core.hpp
+-
+opencv2/calib3d/calib3d.hpp
+-
+iostream
+-
+stdio.h
+-
+stdlib.h
+-
+sstream
+-
+string
+-
+fstream
+-
+
+include/interpolation/pose.h
 
 include/interpolation/spline_fit.h
 eigen3/Eigen/Dense

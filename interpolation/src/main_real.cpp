@@ -84,7 +84,6 @@ int main(int argc, char** argv)
     t_max=spFit2[x].x_max;
     DX = spFit2[x].DX;
     i=0;
-    std::cout<<"MMMMMMMMMMM";
     for(double t=t_min;t<t_max;t+=DX,i++)
     {
         Pose position;
@@ -110,10 +109,10 @@ int main(int argc, char** argv)
     
     double t1 = spFit1[z].getXFromY(BALL_RAD,false);
     double t2 = spFit2[z].getXFromY(BALL_RAD,true);
-    std::cout<<"\nz:"<<BALL_RAD<<", t1:"<<t1<<", y1:"<<spFit1[y].fy(t1)<<", x1:"<<spFit1[x].fy(t1);
-    std::cout<<"\nz:"<<BALL_RAD<<", t2:"<<t2<<", y2:"<<spFit2[y].fy(t2)<<", x2:"<<spFit2[x].fy(t2);
-    std::cout<<"\nvx1:"<<spFit1[x].fyDeriv(t1)<<", vy1:"<<spFit1[y].fyDeriv(t1)<<", vz1:"<<spFit1[z].fyDeriv(t1);
-    std::cout<<"\nvx2:"<<spFit2[x].fyDeriv(t2)<<", vy2:"<<spFit2[y].fyDeriv(t2)<<", vz2:"<<spFit2[z].fyDeriv(t2);
+    //std::cout<<"\nz:"<<BALL_RAD<<", t1:"<<t1<<", y1:"<<spFit1[y].fy(t1)<<", x1:"<<spFit1[x].fy(t1);
+    //std::cout<<"\nz:"<<BALL_RAD<<", t2:"<<t2<<", y2:"<<spFit2[y].fy(t2)<<", x2:"<<spFit2[x].fy(t2);
+    //std::cout<<"\nvx1:"<<spFit1[x].fyDeriv(t1)<<", vy1:"<<spFit1[y].fyDeriv(t1)<<", vz1:"<<spFit1[z].fyDeriv(t1);
+    //std::cout<<"\nvx2:"<<spFit2[x].fyDeriv(t2)<<", vy2:"<<spFit2[y].fyDeriv(t2)<<", vz2:"<<spFit2[z].fyDeriv(t2);
     h<<spFit1[x].fy(t1)<<' '<<spFit1[y].fy(t1)<<' '<<spFit1[z].fy(t1)<<' '<<t1<<'\n';
     h<<spFit2[x].fy(t2)<<' '<<spFit2[y].fy(t2)<<' '<<spFit2[z].fy(t2)<<' '<<t2<<'\n';
     h<<spFit1[x].fyDeriv(t1)<<' '<<spFit1[y].fyDeriv(t1)<<' '<<spFit1[z].fyDeriv(t1)<<'\n';
