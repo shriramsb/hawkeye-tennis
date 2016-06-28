@@ -1,7 +1,7 @@
 make;
 ./spline_fit_real 4429 4476 4455;
 ./bounce_area;
-cd src;
+cd plots;
 python plotData.py;
 python plotPos.py;
 echo Determining bounce area;

@@ -2,7 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <math.h>
- 
+
 const double BALL_RAD = 4.5;
 
 void readFile(std::ifstream& fl,double *var)
@@ -32,8 +32,8 @@ std::vector<double> interpolate(double pos0, double vel0, double t0, double pos1
 
 int main(int argc, char** argv)
 {
-    std::ifstream f("bounce.txt");
-    std::ofstream g("area.txt");
+    std::ifstream f("data/bounce.txt");
+    std::ofstream g("data/area.txt");
     double v[2][3], pt[2][3];
     double t[2];
     std::vector< std::vector<double> > finalPt;
@@ -49,12 +49,12 @@ int main(int argc, char** argv)
     //std::cout<<pt[1][0]<<' '<<pt[1][1]<<' '<<pt[1][2]<<'\n';
     for(int i=0;i<3;i++)
         finalPt.emplace_back(interpolate(pt[0][i],v[0][i],t[0],pt[1][i],v[1][i],t[1]));
-    
+
     //std::cout<<finalPt.size()<<'\n';
     //std::cout<<finalPt[0].size()<<'\n';
     //std::cout<<finalPt[1].size()<<'\n';
     //std::cout<<finalPt[2].size()<<'\n';
-    
+
     //std::cout<<t[0]<<' '<<t[1]<<'\n';
     for(int i=1;i<finalPt[0].size();i++)
     {

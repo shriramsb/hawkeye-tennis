@@ -12,9 +12,9 @@ int main(int argc, char** argv)
     enum {x,y,z};
     SplineFit spFit1[3]={SplineFit(3,0,200),SplineFit(3,0,200),SplineFit(3,0,200)};
     SplineFit spFit2[3]={SplineFit(3,200,0),SplineFit(3,200,0),SplineFit(3,200,0)};
-    std::ofstream f("time.txt");
-    std::ofstream g("pts.txt");
-    std::ofstream h("bounce.txt");
+    std::ofstream f("data/time.txt");
+    std::ofstream g("data/pts.txt");
+    std::ofstream h("data/bounce.txt");
     std::vector<Pose> pts;
     std::vector<Pose> finalPts;
     std::vector<double> extraPtsX1, extraPtsX2, vx1, vx2;
@@ -22,21 +22,21 @@ int main(int argc, char** argv)
     std::vector<double> extraPtsZ1, extraPtsZ2, vz1, vz2;
     std::vector<double> _time, time;
     //Sample points for interpolation
-    std::fstream fl("output.txt",std::ios::binary|std::ios::in);
+    std::fstream fl("data/output.txt",std::ios::binary|std::ios::in);
     point_details pt;
     fl.seekg(start_n*sizeof(pt),std::ios::beg);
     int current_n = start_n;
-	fl.read((char*)&pt,sizeof(pt));
+    fl.read((char*)&pt,sizeof(pt));
     double start_time = pt.frame_time[0];
     while(current_n < end_n)
     {
-    current_n = fl.tellg()/sizeof(pt);    
-	fl.read((char*)&pt,sizeof(pt));
-	double t = pt.frame_time[0] - start_time;	//0 or 1 whichever is better 
+        current_n = fl.tellg()/sizeof(pt);    
+        fl.read((char*)&pt,sizeof(pt));
+        double t = pt.frame_time[0] - start_time;	//0 or 1 whichever is better 
         Pose position;
-	position.x = pt.pt3d.x;
-	position.y = pt.pt3d.y;
-	position.z = -pt.pt3d.z;
+        position.x = pt.pt3d.x;
+        position.y = pt.pt3d.y;
+        position.z = -pt.pt3d.z;
         if(current_n<split_n)
         {
             spFit1[x].getXAndY(t,position.x);
@@ -98,15 +98,12 @@ int main(int argc, char** argv)
     }
     for(i=0;i<finalPts.size();i++)
     {
-     //   if(finalPts[i].z<=2*BALL_RAD)
-       //     std::cout<<"z:"<<finalPts[i].z<<", t:"<<time[i]<<'\n';
         f<<finalPts[i].x<<' '<<finalPts[i].y<<' '<<finalPts[i].z<<' ';
         f<<finalPts[i].vx<<' '<<finalPts[i].vy<<' '<<finalPts[i].vz<<' '<<time[i]<<'\n';
-        //std::cout<<finalPts[i].x<<' '<<finalPts[i].y<<' '<<finalPts[i].z<<' '<<time[i]<<'\n';
     }
     for(i=0;i<pts.size();i++)
         g<<pts[i].x<<' '<<pts[i].y<<' '<<pts[i].z<<' '<<_time[i]<<'\n';
-    
+
     double t1 = spFit1[z].getXFromY(BALL_RAD,false);
     double t2 = spFit2[z].getXFromY(BALL_RAD,true);
     //std::cout<<"\nz:"<<BALL_RAD<<", t1:"<<t1<<", y1:"<<spFit1[y].fy(t1)<<", x1:"<<spFit1[x].fy(t1);

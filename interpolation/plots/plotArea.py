@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
-import time
 import math
-import numpy as np
+
 def drawCircle(xc,yc,r):
     x = []
     y = []
@@ -28,5 +27,5 @@ def plotFn(fileName):
     plt.axis('equal')
 
 if __name__=="__main__":
-    plotFn("../area.txt")
+    plotFn("../data/area.txt")
     plt.show()
