@@ -41,12 +41,12 @@ void syncVideo(CamFrame camera[]){				//manual synchronization of video
 			imshow("camera2", camera[1].orig);
 		}
 		else if (c == 'p'){
-			cout << camera[0].cam.cap.get(CAP_PROP_POS_FRAMES) << endl << camera[1].cam.cap.get(CAP_PROP_POS_FRAMES);
+			cout << camera[0].cam.cap.get(CV_CAP_PROP_POS_FRAMES) << endl << camera[1].cam.cap.get(CV_CAP_PROP_POS_FRAMES);
 		}
 		else if (c == 'b'){
 			for (int i = 0; i < 2; i++){
 				camera[i].clear();
-				camera[i].cam.cap.set(CAP_PROP_POS_FRAMES, camera[i].cam.cap.get(CAP_PROP_POS_FRAMES) - 2);
+				camera[i].cam.cap.set(CV_CAP_PROP_POS_FRAMES, camera[i].cam.cap.get(CV_CAP_PROP_POS_FRAMES) - 2);
 				camera[i].getframe();
 				char temp[20];
 				sprintf(temp, "camera%d", i + 1);
@@ -54,8 +54,8 @@ void syncVideo(CamFrame camera[]){				//manual synchronization of video
 			}
 		}
 		else if (c == 'r'){
-			camera[0].cam.cap.set(CAP_PROP_POS_FRAMES, 3334);
-			camera[1].cam.cap.set(CAP_PROP_POS_FRAMES, 3268);
+			camera[0].cam.cap.set(CV_CAP_PROP_POS_FRAMES, 3334);
+			camera[1].cam.cap.set(CV_CAP_PROP_POS_FRAMES, 3268);
 		}
 		c = waitKey(0);
 	}
@@ -153,8 +153,8 @@ void get3dloc(CamFrame camera[], fstream& output, bool epipolar){
 	else if (n != 0){
 		int pos[2];
 		for (int i = 0; i < 2; i++){
-			pos[i] = camera[i].cam.cap.get(CAP_PROP_POS_MSEC);
-			camera[i].cam.cap.set(CAP_PROP_POS_MSEC, pos[i] + n * 1000);
+			pos[i] = camera[i].cam.cap.get(CV_CAP_PROP_POS_MSEC);
+			camera[i].cam.cap.set(CV_CAP_PROP_POS_MSEC, pos[i] + n * 1000);
 		}
 	}
 */
@@ -219,7 +219,7 @@ void eliminate_duplication(vector<Point2f>& c){
 			copied[i] = true;
 		}
 		else if (count == 1){
-			temp.push_back((c[i] + c[pos]) / 2);
+			temp.push_back((c[i] + c[pos])*0.5);
 			copied[i] = copied[pos] = true;
 
 		}
@@ -346,8 +346,8 @@ void video_controls(CamFrame camera[]){
 		cin >> t;
 		double pos[2];
 		for (int i = 0; i < 2; i++){
-			pos[i] = camera[i].cam.cap.get(CAP_PROP_POS_FRAMES);
-			camera[i].cam.cap.set(CAP_PROP_POS_FRAMES, pos[i] + t);
+			pos[i] = camera[i].cam.cap.get(CV_CAP_PROP_POS_FRAMES);
+			camera[i].cam.cap.set(CV_CAP_PROP_POS_FRAMES, pos[i] + t);
 		}
 		c = '0';
 	}

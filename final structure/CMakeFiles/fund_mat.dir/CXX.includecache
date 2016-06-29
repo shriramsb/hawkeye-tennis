@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/hp/ITSP2k16-HawkEyes/final structure/src/fund_mat.cpp
+opencv2/calib3d/calib3d.hpp
+-
+opencv2/imgproc/imgproc.hpp
+-
+opencv2/highgui/highgui.hpp
+-
+opencv2/core/core.hpp
+-
+opencv2/video/background_segm.hpp
+-
+iostream
+-
+

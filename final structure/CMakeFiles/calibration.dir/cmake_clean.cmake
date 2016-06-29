@@ -1,10 +1,10 @@
-file(REMOVE_RECURSE
+FILE(REMOVE_RECURSE
   "CMakeFiles/calibration.dir/src/calibration.cpp.o"
   "calibration.pdb"
   "calibration"
 )
 
 # Per-language clean rules from dependency scanning.
-foreach(lang CXX)
-  include(CMakeFiles/calibration.dir/cmake_clean_${lang}.cmake OPTIONAL)
-endforeach()
+FOREACH(lang CXX)
+  INCLUDE(CMakeFiles/calibration.dir/cmake_clean_${lang}.cmake OPTIONAL)
+ENDFOREACH(lang)

@@ -1,0 +1,48 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/hp/ITSP2k16-HawkEyes/final structure/src/manual_detection.cpp
+detection.h
+-
+point_details.h
+-
+
+/home/hp/ITSP2k16-HawkEyes/final structure/src/point_details.cpp
+detection.h
+/home/hp/ITSP2k16-HawkEyes/final structure/src/detection.h
+point_details.h
+/home/hp/ITSP2k16-HawkEyes/final structure/src/point_details.h
+
+include/detection.h
+opencv2/imgproc/imgproc.hpp
+-
+opencv2/highgui/highgui.hpp
+-
+opencv2/video/video.hpp
+-
+opencv2/core/core.hpp
+-
+opencv2/calib3d/calib3d.hpp
+-
+opencv2/video/background_segm.hpp
+-
+iostream
+-
+stdio.h
+-
+stdlib.h
+-
+sstream
+-
+string
+-
+fstream
+-
+
+include/point_details.h
+

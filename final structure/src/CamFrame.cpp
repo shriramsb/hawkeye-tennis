@@ -26,16 +26,16 @@ void CamFrame::clear(){
 void CamFrame::getframe(){
 	Mat temp;
 	temp.release();
-	frame_no = cam.cap.get(CAP_PROP_POS_FRAMES);
-	frame_time = cam.cap.get(CAP_PROP_POS_MSEC);
+	frame_no = cam.cap.get(CV_CAP_PROP_POS_FRAMES);
+	frame_time = cam.cap.get(CV_CAP_PROP_POS_MSEC);
 	cam.cap.read(temp);
 
 	remap(temp, orig, cam.mapx, cam.mapy, INTER_LINEAR);
 }
 void CamFrame::nextsecond(){
 	Mat temp;
-	int pos = cam.cap.get(CAP_PROP_POS_MSEC);
-	cam.cap.set(CAP_PROP_POS_MSEC, pos + 1000);
+	int pos = cam.cap.get(CV_CAP_PROP_POS_MSEC);
+	cam.cap.set(CV_CAP_PROP_POS_MSEC, pos + 1000);
 	cam.cap.read(temp);
 	remap(temp, orig, cam.mapx, cam.mapy, INTER_LINEAR);
 }
@@ -43,7 +43,7 @@ void CamFrame::nextsecond(){
 void CamFrame::subtBgColDet(){
 	medianBlur(orig, orig, kernel_size);
 	
-	cam.pMOG2->apply(orig, fgMask, 0);						//without updating background model getting fgMask
+	cam.pMOG2->operator()(orig, fgMask, 0);						//without updating background model getting fgMask
 	threshold(fgMask, fgMask, 230, 255, THRESH_BINARY);
 	orig.copyTo(fg, fgMask);
 	Mat fg_hsv;

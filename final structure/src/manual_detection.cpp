@@ -60,8 +60,8 @@ int main(int argc, char** argv){
 		cout << "Enter frame_no";
 		cin >> p.frame_no[i];
 		VideoCapture cap(argv[i + 1]);
-		cap.set(CAP_PROP_POS_FRAMES, p.frame_no[i]);
-		p.frame_time[i] = cap.get(CAP_PROP_POS_MSEC);
+		cap.set(CV_CAP_PROP_POS_FRAMES, p.frame_no[i]);
+		p.frame_time[i] = cap.get(CV_CAP_PROP_POS_MSEC);
 		cap.read(img);
 		
 		img_detected = img.clone();

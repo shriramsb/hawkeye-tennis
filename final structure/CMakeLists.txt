@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project( ITSP_detection)
-set(OpenCV_DIR '/home/shriram/opencv-3.1.0/build')
-find_package(OpenCV 3.1 REQUIRED)
+find_package(OpenCV REQUIRED)
 include_directories( include /usr/include )
 
 add_executable( calibration src/calibration.cpp )
