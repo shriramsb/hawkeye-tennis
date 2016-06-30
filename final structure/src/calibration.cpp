@@ -11,6 +11,9 @@
 */
 
 #include <calibration.h>
+
+#define SCREEN_WIDTH 1366
+#define SCREEN_HEIGHT 768
 void correctFormat();
 using namespace cv;
 using namespace std;
@@ -60,6 +63,9 @@ int main(int argc, char** argv){
 		vector<vector<Point2f> > img_pts;
 		vector<Point2f> pointBuf;
 		initObj_pts(obj_pts);
+		namedWindow("Chessboard Corners", WINDOW_NORMAL);
+		resizeWindow("Chessboard Corners", SCREEN_WIDTH, SCREEN_WIDTH);
+		
 		for (int i = 1; i <= n_boards; i++){
 			sprintf(filename, "%s/%d.%s", argv[1], i, argv[2]);
 			img = imread(filename, IMREAD_COLOR);
@@ -69,7 +75,11 @@ int main(int argc, char** argv){
 			cvtColor(img, img_gray, COLOR_BGR2GRAY);
 			cornerSubPix(img_gray, pointBuf,Size(11,11),Size(-1,-1),TermCriteria(TermCriteria::EPS+TermCriteria::COUNT,30, 0.1));
 			img_pts.push_back(pointBuf);
+			drawChessboardCorners(img, board_size, pointBuf, found);
+			imshow("Chessboard Corners", img);
+			waitKey(0);
 		}
+		destroyWindow("Chessboard Corners");
 		image_size = Size(img.cols, img.rows);
 		rms = calibrateCamera(obj_pts, img_pts, image_size, camera_matrix, dist_coeff, rvecs, tvecs,flag);
 		Mat optCamMat = getOptimalNewCameraMatrix(camera_matrix,dist_coeff,image_size,1,image_size);
@@ -98,6 +108,8 @@ int main(int argc, char** argv){
 		f << "proj_mat" << proj_mat;
 		f.release();
 		
+		namedWindow("Undistorted Images", WINDOW_NORMAL);
+		resizeWindow("Undistorted Images", SCREEN_WIDTH, SCREEN_WIDTH);
 		char dest_file[50];
 		for (int i = 1; i <= n_boards; i++){
 			sprintf(filename, "%s/%d.%s",argv[1], i, argv[2]);
@@ -105,6 +117,8 @@ int main(int argc, char** argv){
 			img = imread(filename, IMREAD_COLOR);
 			remap(img, temp, map1, map2, INTER_LINEAR);
 			imwrite(dest_file, temp);
+			imshow("Undistorted Images", temp);
+			waitKey(0);
 		}
 		return 0;
 	}

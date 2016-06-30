@@ -91,14 +91,14 @@ void get3dloc(CamFrame camera[], fstream& output, bool epipolar){
 	if (epipolar && camera[0].constraint_center.size() >= 1 && camera[1].constraint_center.size() >= 1){
 		epipolar_constraint(camera[0].constraint_center, camera[1].constraint_center);
 	}
-	vector<Point3f> cam_lines1;
+	/*vector<Point3f> cam_lines1;
 	if (camera[0].constraint_center.size() >= 1){				//drawing epilines
 		computeCorrespondEpilines(camera[0].constraint_center, 1, fund_mat, cam_lines1);
 		Point2f end_pts[2] = {Point2f(-cam_lines1[0].z/cam_lines1[0].x,0), Point2f(0, -cam_lines1[0].z/cam_lines1[0].y)};
 		line(camera[1].contour_plot, end_pts[0], end_pts[1] , Scalar(0,0,255));
 		cout << "End_pts" << end_pts[0] << " " << end_pts[1] << endl;
 		cout << "a = " << cam_lines1[0].x << "b = " << cam_lines1[0].y << "c = " << cam_lines1[0].z << endl;
-	}
+	}*/
 	bool can_find3d = true;
 	Mat pt3d = Mat::zeros(3,1,CV_64F);
 	for (int i = 0; i < 2; i++){
@@ -263,7 +263,6 @@ void epipolar_constraint(vector<Point2f>& cam1pts, vector<Point2f>& cam2pts){
 float dist(Point2f pt, Point3f line){
 	float d;
 	d = abs(line.x * pt.x + line.y * pt.y + line.z);
-	cout << d;
 	return d;
 }
 
@@ -358,9 +357,9 @@ void video_controls(CamFrame camera[]){
 void init_camera(CamFrame camera[], char** argv){
 	cout << endl << "Background learning" << endl;
 	cout << "Camera 1:" << endl;
-	camera[0] = CamFrame(argv[1], argv[3], Scalar(66/2, 59, 40), Scalar(118/2, 255, 255));		//dslr2 - Scalar(66/2, 59, 40), Scalar(118/2, 255, 255) //basktest1 - Scalar(51/2, 59, 40), Scalar(85/2, 255, 255) //dslr - Scalar(51/2, 59, 20), Scalar(118/2, 255, 255)
+	camera[0] = CamFrame(argv[1], argv[3], Scalar(66/2, 59, 40), Scalar(118/2, 255, 255));		//dslr2, bouncetest - Scalar(66/2, 59, 40), Scalar(118/2, 255, 255) //basktest1 - Scalar(51/2, 59, 40), Scalar(85/2, 255, 255) //dslr - Scalar(51/2, 59, 20), Scalar(118/2, 255, 255)
 	cout << "Camera 2:" << endl;
-	camera[1] = CamFrame(argv[2], argv[4], Scalar(51/2, 59, 40), Scalar(85/2, 255, 255));		//dslr2 - Scalar(51/2, 59, 40), Scalar(85/2, 255, 255)  //basktest1 - Scalar(51/2, 59, 58), Scalar(85/2, 255, 255) //dslr - Scalar(51/2, 59, 20), Scalar(118/2, 255, 255)
+	camera[1] = CamFrame(argv[2], argv[4], Scalar(51/2, 59, 40), Scalar(85/2, 255, 255));		//dslr2, bouncetest - Scalar(51/2, 59, 40), Scalar(85/2, 255, 255)  //basktest1 - Scalar(51/2, 59, 58), Scalar(85/2, 255, 255) //dslr - Scalar(51/2, 59, 20), Scalar(118/2, 255, 255)
 }
 
 void videoControls_help(){
