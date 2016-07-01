@@ -1,2 +1,2 @@
-/home/hp/ITSP2k16-HawkEyes/interpolation/CMakeFiles/spline_fit.dir
+/home/hp/ITSP2k16-HawkEyes/interpolation/CMakeFiles/bounce_area.dir
 /home/hp/ITSP2k16-HawkEyes/interpolation/CMakeFiles/spline_fit_real.dir

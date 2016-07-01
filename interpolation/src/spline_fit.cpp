@@ -2,8 +2,9 @@
 #include <iostream>
 #include <fstream>
 
-SplineFit::SplineFit(int deg, int nBefore, int nAfter)
+SplineFit::SplineFit(int deg, int nBefore, int nAfter, double dx)
 {
+    DX = dx;
     degree = deg;
     n_before = nBefore;
     n_after = nAfter;
@@ -44,14 +45,22 @@ std::vector<double> SplineFit::differentiate()
     return _derivY;
 }
 
+std::vector<double> SplineFit::integrate()
+{
+    return _intgrY;
+}
+
 void SplineFit::linearFit()
 {
     double m = (_y[n-1]-_y[n-2])/(_x[n-1]-_x[n-2]);
     for(double x=_x[n-2];x<=_x[n-1];x+=DX)
     {
         double y = _y[n-2] + m*(x-_x[n-2]);
+        double c = _y[n-2]*_x[n-2] + m*((_x[n-2]*_x[n-2])/2.0-_x[n-2]*_x[n-2]);
+        double yI = _y[n-2]*x + m*((x*x)/2.0-_x[n-2]*x) - c;
         _finalY.emplace_back(y);
         _derivY.emplace_back(m);
+        _intgrY.emplace_back(yI);
     }
 }
 
@@ -60,11 +69,13 @@ void SplineFit::quadraticFit()
     fitYQuad();
     _finalY.resize(0);
     _derivY.resize(0);
+    _intgrY.resize(0);
     for(double x=x_min;x<x_max;x+=DX)
     {
-        double y = fyQuad(x), yd = fyQuadDeriv(x);
+        double y = fyQuad(x), yd = fyQuadDeriv(x), yi = fyQuadIntgr(x);
         _finalY.emplace_back(y);
         _derivY.emplace_back(yd);
+        _intgrY.emplace_back(yi);
     }
 }
 
@@ -73,9 +84,10 @@ void SplineFit::cubicFit()
     fitYCubic();
     _finalY.resize(0);
     _derivY.resize(0);
+    _intgrY.resize(0);
     for(double x=x_min;x<x_max;x+=DX)
     {
-        double y = fyCubic(x), yd = fyCubicDeriv(x);
+        double y = fyCubic(x), yd = fyCubicDeriv(x), yi = fyCubicIntgr(x);
         _finalY.emplace_back(y);
         _derivY.emplace_back(yd);
     }
@@ -224,6 +236,31 @@ double SplineFit::fyQuad(double x)
         }
     }
 }
+double SplineFit::fyQuadIntgr(double x)
+{
+    double f;
+    if(x>=_x[n-1] or x<_x[0])
+    {
+        int i;
+        if(x>=_x[n-1]) i = n-2;
+        else if(x<_x[0]) i = 0;
+        double xi = _x[i];
+        f = _y[i]*x + b[i]*(x-xi)*(x-xi)/2.0 + c[i]*(x-xi)*(x-xi)*(x-xi)/3.0;
+        return f;
+    }
+    else
+    {
+        for(int i=0;i<n-1;i++)
+        {
+            if(x>=_x[i] && x<_x[i+1])
+            {
+                double xi = _x[i];
+                f = _y[i]*x + b[i]*(x-xi)*(x-xi)/2.0 + c[i]*(x-xi)*(x-xi)*(x-xi)/3.0;
+                return f;
+            }
+        }
+    }
+}
 double SplineFit::fyQuadDeriv(double x)
 {
     double f;
@@ -276,6 +313,32 @@ double SplineFit::fyCubic(double x)
         }
     }
 }
+double SplineFit::fyCubicIntgr(double x)
+{
+    double f;
+
+    if(x>=_x[n-1] or x<_x[0])
+    {
+        int i;
+        if(x>=_x[n-1]) i = n-2;
+        else if(x<_x[0]) i = 0;
+        double xi = _x[i];
+        f = _y[i]*x + b[i]*(x-xi)*(x-xi)/2.0 + c[i]*(x-xi)*(x-xi)*(x-xi)/3.0 + d[i]*(x-xi)*(x-xi)*(x-xi)*(x-xi)/4.0;
+        return f;
+    }
+    else
+    {
+        for(int i=0;i<n-1;i++)
+        {
+            if(x>=_x[i] && x<_x[i+1])
+            {
+                double xi = _x[i];
+                f = _y[i]*x + b[i]*(x-xi)*(x-xi)/2.0 + c[i]*(x-xi)*(x-xi)*(x-xi)/3.0 + d[i]*(x-xi)*(x-xi)*(x-xi)*(x-xi)/4.0;
+                return f;
+            }
+        }
+    }
+}
 double SplineFit::fyCubicDeriv(double x)
 {
     double f;
@@ -315,6 +378,13 @@ double SplineFit::fyDeriv(double x)
         return fyQuadDeriv(x);
     else if(degree == 3)
         return fyCubicDeriv(x);
+}
+double SplineFit::fyIntgr(double x)
+{
+    if(degree == 2)
+        return fyQuadIntgr(x);
+    else if(degree == 3)
+        return fyCubicIntgr(x);
 }
 double SplineFit::getXFromY(double y, bool firstX)
 {
